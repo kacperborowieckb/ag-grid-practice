@@ -14,6 +14,8 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "ag-grid-vue3": "^32.1.0",
+    "axios": "^1.7.7",
     "json-server": "^1.0.0-beta.2",
     "pinia": "^2.1.7",
     "vue": "^3.4.29"

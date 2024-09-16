@@ -1,10 +1,9 @@
-<template></template>
+<template>
+  <Table />
+</template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import Table from './components/Table.vue'
+</script>
 
-<style scoped lang="scss">
-body {
-  padding: 2rem;
-  background-color: red;
-}
-</style>
+<style scoped lang="scss"></style>
