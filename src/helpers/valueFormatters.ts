@@ -5,7 +5,7 @@ import type { StudentsTableRowData } from './columnDefinitions'
 type StudentsFormatterParams<T> = ValueFormatterParams<StudentsTableRowData, T>
 
 export const studentsHobbiesFormatter = (params: StudentsFormatterParams<string[]>) => {
-  return params.value ? params.value.join(', ') : ''
+  return params.value ? params.value.join(', ') : 'No hobbies.'
 }
 
 export const studentsBirthDateFormatter = (params: StudentsFormatterParams<number>) => {
