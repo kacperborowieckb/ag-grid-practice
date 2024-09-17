@@ -3,7 +3,7 @@
     :columnDefs="studentsColumnDefs"
     :defaultColDef="defaultStudentsColumnDef"
     :rowData="studentsStore.students"
-    @grid-ready="onGridReady"
+    @gridReady="onGridReady"
     class="students-table ag-theme-quartz-dark"
   />
 </template>
@@ -29,12 +29,12 @@ const studentsColumnDefs = ref(getStudentsColDefs())
 const defaultStudentsColumnDef = ref(getDefaultStudentsColDef())
 const studentsTableApi = shallowRef<GridApi<StudentsTableRowData> | null>(null)
 
-const onFetchStudentsError = (fetchStudentsError: string) => {
+const onFetchStudentsError = (fetchStudentsErrorMessage: string) => {
   if (!studentsTableApi.value) return
 
   createGridError<StudentsTableRowData>(
     studentsTableApi.value,
-    `Failed to fetch, please refresh the page. ${fetchStudentsError}`
+    `Failed to fetch, please refresh the page. ${fetchStudentsErrorMessage}`
   )
 }
 
@@ -48,6 +48,5 @@ const onGridReady = (params: GridReadyEvent) => {
 <style scoped lang="scss">
 .students-table {
   height: 500px;
-  width: 100%;
 }
 </style>
