@@ -21,7 +21,7 @@ import { createGridError } from '@/utils/createGridError'
 const studentsStore = useStudentsStore()
 
 const columnDefs = ref(getStudentsColDefs())
-const studentsTableApi = shallowRef<GridApi<StudentsTableRowData>>()
+const studentsTableApi = shallowRef<GridApi<StudentsTableRowData> | null>(null)
 
 const onGridReady = (params: GridReadyEvent) => {
   studentsTableApi.value = params.api

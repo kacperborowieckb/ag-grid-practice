@@ -6,14 +6,14 @@ import type { Student } from '@/services/students'
 type StudentsStoreState = {
   students?: Student[]
   isLoading: boolean
-  error: false | string
+  error: string
 }
 
 export const useStudentsStore = defineStore('students', {
   state: (): StudentsStoreState => ({
     students: undefined,
     isLoading: false,
-    error: false
+    error: ''
   }),
   actions: {
     async fetchStudents() {
