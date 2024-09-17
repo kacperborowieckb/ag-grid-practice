@@ -1,4 +1,4 @@
-import type { ColDef } from 'ag-grid-community'
+import type { ColDef, ColDefField } from 'ag-grid-community'
 
 import {
   studentsAgeFormatter,
@@ -10,6 +10,8 @@ import type { Student } from '@/services/students'
 export type StudentsTableRowData = Student & {
   age: number
 }
+
+export const getDefaultStudentsColDef = (): ColDef => ({ flex: 1 })
 
 export const getStudentsColDefs = (): ColDef<StudentsTableRowData>[] => [
   {
