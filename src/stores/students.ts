@@ -4,7 +4,7 @@ import { api } from '@/services'
 import type { Student } from '@/services/students'
 
 type StudentsStoreState = {
-  students?: Student[]
+  students: Student[] | null
   isLoading: boolean
   error: string
 }
@@ -13,7 +13,7 @@ type FetchStudentsActionProps = { onError: (errorMessage: string) => void }
 
 export const useStudentsStore = defineStore('students', {
   state: (): StudentsStoreState => ({
-    students: undefined,
+    students: null,
     isLoading: false,
     error: ''
   }),

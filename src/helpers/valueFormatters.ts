@@ -1,6 +1,6 @@
 import type { ValueFormatterParams } from 'ag-grid-community'
 
-import type { StudentsTableRowData } from './columnDefinitions'
+import type { StudentsTableRowData } from '@/helpers/columnDefinitions'
 
 type StudentsFormatterParams<T> = ValueFormatterParams<StudentsTableRowData, T>
 

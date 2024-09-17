@@ -1,10 +1,10 @@
-import type { ColDef, ColDefField } from 'ag-grid-community'
+import type { ColDef } from 'ag-grid-community'
 
 import {
   studentsAgeFormatter,
   studentsBirthDateFormatter,
   studentsHobbiesFormatter
-} from './valueFormatters'
+} from '@/helpers/valueFormatters'
 import type { Student } from '@/services/students'
 
 export type StudentsTableRowData = Student & {
