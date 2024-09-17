@@ -9,7 +9,7 @@ type StudentsStoreState = {
   error: string
 }
 
-type FetchStudentsActionProps = { onError: (errorMessage: string) => void }
+type FetchStudentsActionProps = { onError?: (errorMessage: string) => void }
 
 export const useStudentsStore = defineStore('students', {
   state: (): StudentsStoreState => ({
@@ -32,7 +32,8 @@ export const useStudentsStore = defineStore('students', {
       } catch (error) {
         if (error instanceof Error) {
           this.error = error.message
-          onError(this.error)
+
+          if (onError) onError(this.error)
         }
       } finally {
         this.isLoading = false
