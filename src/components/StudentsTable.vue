@@ -32,7 +32,7 @@ const studentsTableApi = shallowRef<GridApi<StudentsTableRowData> | null>(null)
 const onFetchStudentsError = (fetchStudentsErrorMessage: string) => {
   if (!studentsTableApi.value) return
 
-  createGridError<StudentsTableRowData>(
+  createGridError(
     studentsTableApi.value,
     `Failed to fetch, please refresh the page. ${fetchStudentsErrorMessage}`
   )
