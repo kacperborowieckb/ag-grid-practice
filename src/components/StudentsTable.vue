@@ -4,6 +4,7 @@
     :columnDefs="studentsColDefs"
     :defaultColDef="defaultStudentsColDef"
     :rowData="studentsStore.students"
+    :editType="'fullRow'"
     @gridReady="onGridReady"
   />
 </template>

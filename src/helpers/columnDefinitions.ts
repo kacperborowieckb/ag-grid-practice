@@ -2,6 +2,7 @@ import type { ColDef } from 'ag-grid-community'
 
 import { getStudentsAge, getStudentsBirthDate, getStudentsHobbies } from '@/helpers/valueGetters'
 import type { Student } from '@/services/students'
+import StudentsTableActionsRenderer from '@/components/StudentsTableActionsRenderer.vue'
 
 export type StudentsTableRowData = Student & {
   age: number
