@@ -8,7 +8,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, shallowRef, watch } from 'vue'
+import { ref, shallowRef } from 'vue'
 import 'ag-grid-community/styles/ag-grid.css'
 import 'ag-grid-community/styles/ag-theme-quartz.css'
 import { AgGridVue } from 'ag-grid-vue3'
@@ -23,25 +23,20 @@ const studentsStore = useStudentsStore()
 const columnDefs = ref(getStudentsColDefs())
 const studentsTableApi = shallowRef<GridApi<StudentsTableRowData> | null>(null)
 
-const onGridReady = (params: GridReadyEvent) => {
-  studentsTableApi.value = params.api
+const onFetchStudentsError = (fetchStudentsError: string) => {
+  if (!studentsTableApi.value) return
+
+  createGridError<StudentsTableRowData>(
+    studentsTableApi.value,
+    `Failed to fetch, please refresh the page. ${fetchStudentsError}`
+  )
 }
 
-watch(
-  () => studentsStore.error,
-  (studentsError) => {
-    if (!studentsError || !studentsTableApi.value) return
+const onGridReady = (params: GridReadyEvent) => {
+  studentsTableApi.value = params.api
 
-    createGridError<StudentsTableRowData>(
-      studentsTableApi.value,
-      `Failed to fetch, please refresh the page: ${studentsError}`
-    )
-  }
-)
-
-onMounted(() => {
-  studentsStore.fetchStudents()
-})
+  studentsStore.fetchStudents({ onError: onFetchStudentsError })
+}
 </script>
 
 <style scoped lang="scss">

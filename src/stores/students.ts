@@ -9,6 +9,8 @@ type StudentsStoreState = {
   error: string
 }
 
+type FetchStudentsActionProps = { onError: (errorMessage: string) => void }
+
 export const useStudentsStore = defineStore('students', {
   state: (): StudentsStoreState => ({
     students: undefined,
@@ -16,7 +18,7 @@ export const useStudentsStore = defineStore('students', {
     error: ''
   }),
   actions: {
-    async fetchStudents() {
+    async fetchStudents({ onError }: FetchStudentsActionProps) {
       try {
         this.isLoading = true
 
@@ -30,6 +32,7 @@ export const useStudentsStore = defineStore('students', {
       } catch (error) {
         if (error instanceof Error) {
           this.error = error.message
+          onError(this.error)
         }
       } finally {
         this.isLoading = false
