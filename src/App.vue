@@ -1,9 +1,7 @@
 <template>
-  <Table />
+  <StudentsTable />
 </template>
 
 <script setup lang="ts">
-import Table from './components/Table.vue'
+import StudentsTable from './components/StudentsTable.vue'
 </script>
-
-<style scoped lang="scss"></style>
