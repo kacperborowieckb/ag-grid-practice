@@ -5,14 +5,10 @@ import {
   studentsBirthDateFormatter,
   studentsHobbiesFormatter
 } from './valueFormatters'
+import type { Student } from '@/services/students'
 
-export type StudentsTableRowData = {
-  name: string
-  lastName: string
-  birthDate: string
+export type StudentsTableRowData = Student & {
   age: number
-  finalGrade: number
-  hobbies: number[]
 }
 
 export const getStudentsColDefs = (): ColDef<StudentsTableRowData>[] => [
