@@ -1,15 +1,15 @@
 <template>
   <AgGridVue
+    class="students-table ag-theme-quartz-dark"
     :columnDefs="studentsColDefs"
     :defaultColDef="defaultStudentsColDef"
     :rowData="studentsStore.students"
     @gridReady="onGridReady"
-    class="students-table ag-theme-quartz-dark"
   />
 </template>
 
 <script setup lang="ts">
-import { ref, shallowRef } from 'vue'
+import { shallowRef } from 'vue'
 import 'ag-grid-community/styles/ag-grid.css'
 import 'ag-grid-community/styles/ag-theme-quartz.css'
 import { AgGridVue } from 'ag-grid-vue3'
@@ -21,19 +21,18 @@ import {
   studentsColDefs,
   type StudentsTableRowData
 } from '@/helpers/columnDefinitions'
-import { createGridError } from '@/utils/createGridError'
+import { useGridError } from '@/composables/useGridError'
 
 const studentsStore = useStudentsStore()
 
 const studentsTableApi = shallowRef<GridApi<StudentsTableRowData> | null>(null)
 
+const { showError } = useGridError(studentsTableApi)
+
 const onFetchStudentsError = (fetchStudentsErrorMessage: string) => {
   if (!studentsTableApi.value) return
 
-  createGridError(
-    studentsTableApi.value,
-    `Failed to fetch, please refresh the page. ${fetchStudentsErrorMessage}`
-  )
+  showError(`Failed to fetch, please refresh the page. ${fetchStudentsErrorMessage}`)
 }
 
 const onGridReady = (params: GridReadyEvent) => {
