@@ -1,7 +1,7 @@
 <template>
   <AgGridVue
-    :columnDefs="studentsColumnDefs"
-    :defaultColDef="defaultStudentsColumnDef"
+    :columnDefs="studentsColDefs"
+    :defaultColDef="defaultStudentsColDef"
     :rowData="studentsStore.students"
     @gridReady="onGridReady"
     class="students-table ag-theme-quartz-dark"
@@ -17,16 +17,14 @@ import type { GridReadyEvent, GridApi } from 'ag-grid-community'
 
 import { useStudentsStore } from '@/stores/students'
 import {
-  getDefaultStudentsColDef,
-  getStudentsColDefs,
+  defaultStudentsColDef,
+  studentsColDefs,
   type StudentsTableRowData
 } from '@/helpers/columnDefinitions'
 import { createGridError } from '@/utils/createGridError'
 
 const studentsStore = useStudentsStore()
 
-const studentsColumnDefs = ref(getStudentsColDefs())
-const defaultStudentsColumnDef = ref(getDefaultStudentsColDef())
 const studentsTableApi = shallowRef<GridApi<StudentsTableRowData> | null>(null)
 
 const onFetchStudentsError = (fetchStudentsErrorMessage: string) => {

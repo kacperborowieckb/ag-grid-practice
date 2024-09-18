@@ -11,9 +11,9 @@ export type StudentsTableRowData = Student & {
   age: number
 }
 
-export const getDefaultStudentsColDef = (): ColDef => ({ flex: 1 })
+export const defaultStudentsColDef: ColDef = { flex: 1 }
 
-export const getStudentsColDefs = (): ColDef<StudentsTableRowData>[] => [
+export const studentsColDefs: ColDef<StudentsTableRowData>[] = [
   {
     headerName: 'Name',
     field: 'name'
