@@ -5,15 +5,15 @@ import type { StudentsTableRowData } from '@/helpers/columnDefinitions'
 type StudentsGetterParams<T> = ValueGetterParams<StudentsTableRowData, T>
 
 export const getStudentsHobbies = (params: StudentsGetterParams<string[]>) => {
-  const hobbies = params.data?.hobbies || []
+  const hobbies = params.data?.hobbies?.value || []
 
   return hobbies.join(', ') || 'No hobbies.'
 }
 
 export const getStudentsBirthDate = (params: StudentsGetterParams<number>) => {
-  if (!params.data?.birthDate) return ''
+  if (!params.data?.birthDate.value) return ''
 
-  const birthday = new Date(params.data.birthDate)
+  const birthday = new Date(params.data.birthDate.value)
   const today = new Date()
 
   const isCelebratingBirthday =
@@ -23,7 +23,7 @@ export const getStudentsBirthDate = (params: StudentsGetterParams<number>) => {
 }
 
 export const getStudentsAge = (params: StudentsGetterParams<number>) => {
-  if (!params.data?.birthDate) return ''
+  if (!params.data?.birthDate.value) return ''
 
-  return (new Date().getFullYear() - new Date(params.data.birthDate).getFullYear()).toString()
+  return (new Date().getFullYear() - new Date(params.data.birthDate.value).getFullYear()).toString()
 }

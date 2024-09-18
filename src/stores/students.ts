@@ -2,9 +2,17 @@ import { defineStore } from 'pinia'
 
 import { api } from '@/services'
 import type { Student } from '@/services/students'
+import { getStudentsWithMetadata } from '@/helpers/metadataAdders'
+
+export type StudentWithMetadata = {
+  [T in keyof Student]: {
+    value: Student[T]
+    isValidated: boolean
+  }
+}
 
 type StudentsStoreState = {
-  students: Student[] | null
+  students: StudentWithMetadata[] | null
   isLoading: boolean
   error: string
 }
@@ -28,7 +36,7 @@ export const useStudentsStore = defineStore('students', {
           throw new Error('Fetching students failed')
         }
 
-        this.students = data.data
+        this.students = getStudentsWithMetadata(data.data)
       } catch (error) {
         if (error instanceof Error) {
           this.error = error.message

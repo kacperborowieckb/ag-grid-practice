@@ -3,8 +3,9 @@ import type { ColDef } from 'ag-grid-community'
 import { getStudentsAge, getStudentsBirthDate, getStudentsHobbies } from '@/helpers/valueGetters'
 import type { Student } from '@/services/students'
 import StudentsTableActionsRenderer from '@/components/StudentsTableActionsRenderer.vue'
+import type { StudentWithMetadata } from '@/stores/students'
 
-export type StudentsTableRowData = Student & {
+export type StudentsTableRowData = StudentWithMetadata & {
   age: number
 }
 
@@ -17,11 +18,28 @@ export const defaultStudentsColDef: ColDef = {
 export const studentsColDefs: ColDef<StudentsTableRowData>[] = [
   {
     headerName: 'Name',
-    field: 'name'
+    field: 'name',
+    valueGetter: (params) => params.data?.name.value,
+    valueSetter: (params) => {
+      if (params.newValue.length > 5) {
+        params.data.name.isValidated = false
+        params.data.name.value = params.oldValue
+
+        return false
+      }
+      params.data.name.isValidated = true
+      params.data.name.value = params.newValue
+
+      return true
+    },
+    cellClassRules: {
+      'cell-error': (params) => !params.data?.name.isValidated
+    }
   },
   {
     headerName: 'Last Name',
-    field: 'lastName'
+    field: 'lastName',
+    valueGetter: (params) => params.data?.lastName.value
   },
   {
     headerName: 'Birth Date',
@@ -35,7 +53,8 @@ export const studentsColDefs: ColDef<StudentsTableRowData>[] = [
   },
   {
     headerName: 'Final Grade',
-    field: 'finalGrade'
+    field: 'finalGrade',
+    valueGetter: (params) => params.data?.finalGrade.value
   },
   {
     headerName: 'Hobbies',
