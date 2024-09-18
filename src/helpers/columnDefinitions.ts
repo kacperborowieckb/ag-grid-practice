@@ -8,7 +8,11 @@ export type StudentsTableRowData = Student & {
   age: number
 }
 
-export const defaultStudentsColDef: ColDef = { flex: 1 }
+export const defaultStudentsColDef: ColDef = {
+  flex: 1,
+  editable: true,
+  enableCellChangeFlash: true
+}
 
 export const studentsColDefs: ColDef<StudentsTableRowData>[] = [
   {
@@ -26,7 +30,8 @@ export const studentsColDefs: ColDef<StudentsTableRowData>[] = [
   },
   {
     headerName: 'Age',
-    valueGetter: getStudentsAge
+    valueGetter: getStudentsAge,
+    editable: false
   },
   {
     headerName: 'Final Grade',
@@ -35,6 +40,24 @@ export const studentsColDefs: ColDef<StudentsTableRowData>[] = [
   {
     headerName: 'Hobbies',
     field: 'hobbies',
-    valueGetter: getStudentsHobbies
+    valueGetter: getStudentsHobbies,
+    valueParser: (params) => {
+      if (params.newValue.includes(',')) {
+        return params.newValue.split(',').map((hobby) => hobby.trim())
+      }
+
+      return params.oldValue
+    }
+  },
+  {
+    colId: 'edit',
+    headerName: 'Edit',
+    cellRenderer: StudentsTableActionsRenderer,
+    editable: false,
+    valueGetter: (params) => {
+      const isEditing = !!params.api.getEditingCells().length
+
+      return { isEditing }
+    }
   }
 ]

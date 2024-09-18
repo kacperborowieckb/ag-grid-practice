@@ -1,23 +1,29 @@
 <template>
-  <button @click="startEditing">Edit</button>
+  <button v-if="params.value?.isEditing" @click="console.log('end')">Submit</button>
+  <button v-else @click="startEditing">Edit</button>
 </template>
 
 <script setup lang="ts">
 import type { ICellRendererParams } from 'ag-grid-community'
 
-const props = defineProps<{ params: ICellRendererParams }>()
+type StudentsTableActionsRendererProps = {
+  params: ICellRendererParams<any, { isEditing: boolean }>
+}
+
+const props = defineProps<StudentsTableActionsRendererProps>()
 const params = props.params
 
 const startEditing = () => {
   const rowIndex = params.node.rowIndex
-  const colKey = params.api.getColumns() ?? []
+  const columns = params.api.getColumns() ?? []
+  const colKey = columns[0].getColId()
 
-  if (!rowIndex || !colKey[0]) return
+  if (!rowIndex || !colKey) return
 
-  params.api.setFocusedCell(rowIndex, colKey[0])
+  params.api.setFocusedCell(rowIndex, colKey)
   params.api.startEditingCell({
     rowIndex,
-    colKey: colKey[0]
+    colKey
   })
 }
 </script>

@@ -6,6 +6,8 @@
     :rowData="studentsStore.students"
     :editType="'fullRow'"
     @gridReady="onGridReady"
+    @rowEditingStarted="onRowEditingStarted"
+    @rowEditingStopped="onRowEditingStopped"
   />
 </template>
 
@@ -14,7 +16,7 @@ import { shallowRef } from 'vue'
 import 'ag-grid-community/styles/ag-grid.css'
 import 'ag-grid-community/styles/ag-theme-quartz.css'
 import { AgGridVue } from 'ag-grid-vue3'
-import type { GridReadyEvent, GridApi } from 'ag-grid-community'
+import type { GridApi, GridReadyEvent, RowEditingStartedEvent } from 'ag-grid-community'
 
 import { useStudentsStore } from '@/stores/students'
 import {
@@ -40,6 +42,20 @@ const onGridReady = (params: GridReadyEvent) => {
   studentsTableApi.value = params.api
 
   studentsStore.fetchStudents({ onError: onFetchStudentsError })
+}
+
+const onRowEditingStarted = (params: RowEditingStartedEvent) => {
+  params.api.refreshCells({
+    columns: ['edit'],
+    rowNodes: [params.node]
+  })
+}
+
+const onRowEditingStopped = (params: RowEditingStartedEvent) => {
+  params.api.refreshCells({
+    columns: ['edit'],
+    rowNodes: [params.node]
+  })
 }
 </script>
 
