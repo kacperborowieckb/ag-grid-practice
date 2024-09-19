@@ -1,5 +1,5 @@
 <template>
-  <button v-if="params.value?.isEditing" @click="console.log('end')">Submit</button>
+  <button v-if="params.value?.isEditing" @click="stopEditing">Submit</button>
   <button v-else @click="startEditing">Edit</button>
 </template>
 
@@ -26,4 +26,6 @@ const startEditing = () => {
     colKey
   })
 }
+
+const stopEditing = () => params.api.stopEditing()
 </script>
