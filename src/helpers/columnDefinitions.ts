@@ -71,9 +71,9 @@ export const studentsColDefs: ColDef<StudentsTableRowData>[] = [
     valueFormatter: studentsHobbiesFormatter,
     valueGetter: getStudentsHobbies,
     valueSetter: validatedValueSetter(validateHobbies, (val) => {
-      if (!val) return []
+      if (!val.trim()) return []
 
-      return val.split(', ').map((hobby) => hobby.trim())
+      return val.split(', ').map((hobby) => hobby.trim().replace(/\s+/g, ' '))
     })
   },
   {

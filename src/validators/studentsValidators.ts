@@ -11,5 +11,5 @@ export const validateBirthDate = (birthDate: string) => {
 }
 
 export const validateHobbies = (hobbies: string) => {
-  return /^\s*([\p{L}\d]+(\s*,\s*[\p{L}\d]+)*)?\s*$/u.test(hobbies)
+  return /^\s*(?!,)(\d|\p{L}|\s)*(\s*,\s*(\d|\p{L}|\s)+)*\s*$/u.test(hobbies)
 }
