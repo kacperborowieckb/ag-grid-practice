@@ -7,7 +7,7 @@
 import type { ICellRendererParams } from 'ag-grid-community'
 
 type StudentsTableActionsRendererProps = {
-  params: ICellRendererParams<any, { isEditing: boolean; isInvalidated: boolean }>
+  params: ICellRendererParams<any, { isEditing: boolean }>
 }
 
 const props = defineProps<StudentsTableActionsRendererProps>()
