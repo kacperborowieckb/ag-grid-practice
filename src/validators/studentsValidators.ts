@@ -7,7 +7,7 @@ export const validateFinalGrade = (grade: string) => {
 }
 
 export const validateBirthDate = (birthDate: string) => {
-  return !!birthDate
+  return birthDate ? new Date(birthDate).getTime() < new Date().getTime() : !!birthDate
 }
 
 export const validateHobbies = (hobbies: string) => {

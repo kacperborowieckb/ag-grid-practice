@@ -25,18 +25,14 @@ import type {
   CellClickedEvent
 } from 'ag-grid-community'
 
-import { useStudentsStore } from '@/stores/students'
-import {
-  defaultStudentsColDef,
-  studentsColDefs,
-  type StudentsTableRowData
-} from '@/helpers/columnDefinitions'
+import { useStudentsStore, type StudentWithMetadata } from '@/stores/students'
+import { defaultStudentsColDef, studentsColDefs } from '@/helpers/columnDefinitions'
 import { useGridError } from '@/composables/useGridError'
 
 const studentsStore = useStudentsStore()
 
-const rowEditDefaultData = ref<StudentsTableRowData | null>(null)
-const studentsTableApi = shallowRef<GridApi<StudentsTableRowData> | null>(null)
+const rowEditDefaultData = ref<StudentWithMetadata | null>(null)
+const studentsTableApi = shallowRef<GridApi<StudentWithMetadata> | null>(null)
 
 const { showError } = useGridError(studentsTableApi)
 
@@ -72,17 +68,23 @@ const onCellClicked = (params: CellClickedEvent) => {
   }
 }
 
-const onRowEditingStopped = (params: RowEditingStartedEvent<StudentsTableRowData>) => {
-  const isInvalid = Object.values(params.data ?? {}).some((cell) => {
-    if (typeof cell === 'number') return false
+const onRowEditingStopped = (params: RowEditingStartedEvent<StudentWithMetadata>) => {
+  const rowData = params.data
 
-    return cell.isValidated !== true
-  })
+  if (!rowData) return
 
-  if (isInvalid) {
+  const invalidCells = Object.values(rowData)
+    .map((cell) => {
+      return cell.isValidated !== true ? cell.value : null
+    })
+    .filter(Boolean)
+
+  if (invalidCells.length) {
     const rowIndex = params.rowIndex
     const columns = params.api.getColumns() ?? []
-    const colKey = columns[0].getColId()
+    const colKey = columns.find((column) => {
+      return rowData[column.getId() as keyof StudentWithMetadata]?.value === invalidCells[0]
+    })
 
     if (rowIndex === null || !colKey) return
 
