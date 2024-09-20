@@ -9,13 +9,12 @@ export const validatedValueSetter =
     if (!field) return false
 
     const newValue = customSetter ? customSetter(params.newValue) : params.newValue
-    const oldValue = customSetter ? customSetter(params.oldValue) : params.oldValue
 
     params.data[field] = {
       ...params.data[field],
       isValidated: isValid,
-      value: isValid ? newValue : oldValue
+      value: newValue
     }
 
-    return isValid
+    return false
   }

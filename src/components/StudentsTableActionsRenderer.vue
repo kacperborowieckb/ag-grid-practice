@@ -1,5 +1,10 @@
 <template>
-  <button v-if="params.value?.isEditing" @click="stopEditing">Submit</button>
+  <template v-if="params.value?.isEditing">
+    <div class="action-container">
+      <button @click="stopEditing">Submit</button>
+      <button data-action="cancel">Cancel</button>
+    </div>
+  </template>
   <button v-else @click="startEditing">Edit</button>
 </template>
 
@@ -20,7 +25,6 @@ const startEditing = () => {
 
   if (!rowIndex || !colKey) return
 
-  params.api.setFocusedCell(rowIndex, colKey)
   params.api.startEditingCell({
     rowIndex,
     colKey
