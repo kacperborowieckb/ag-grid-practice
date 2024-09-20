@@ -1,19 +1,19 @@
 import type { ValueSetterParams } from 'ag-grid-community'
 
 export const validatedValueSetter =
-  (validateFn: (stringToTest: string) => boolean, customSetter?: (value: string) => void) =>
-  (params: ValueSetterParams) => {
-    const isValid = validateFn(params.newValue)
+  (customSetter?: (value: string) => void) => (params: ValueSetterParams) => {
     const field = params.colDef.field
 
     if (!field) return false
 
     const newValue = customSetter ? customSetter(params.newValue) : params.newValue
+    const oldValue = customSetter ? customSetter(params.oldValue) : params.oldValue
+    const shouldUpdate = params.data[field].isValidated
 
     params.data[field] = {
       ...params.data[field],
-      isValidated: isValid,
-      value: newValue
+      isValidated: true,
+      value: shouldUpdate ? newValue : oldValue
     }
 
     return false

@@ -12,6 +12,7 @@ import {
 import { getStudentsAge, getStudentsBirthDate, getStudentsHobbies } from './valueGetters'
 import { validatedValueSetter } from './valueSetters'
 import { studentsBirthDateFormatter, studentsHobbiesFormatter } from './valueFormatters'
+import ValidatedTextCellEditor from '@/components/ValidatedTextCellEditor.vue'
 
 export type StudentsTableRowData = StudentWithMetadata & {
   age: number
@@ -20,39 +21,34 @@ export type StudentsTableRowData = StudentWithMetadata & {
 export const defaultStudentsColDef: ColDef = {
   flex: 1,
   editable: true,
-  enableCellChangeFlash: true,
-  cellClassRules: {
-    'cell-error': (params) => {
-      const field = params.colDef.field
-      const data = params.data
-
-      if (!field) return false
-
-      return !data[field].isValidated
-    }
-  }
+  enableCellChangeFlash: true
 }
 
 export const studentsColDefs: ColDef<StudentsTableRowData>[] = [
   {
     headerName: 'Name',
     field: 'name',
+    cellEditor: ValidatedTextCellEditor,
+    cellEditorParams: { validator: validateStudentName },
     valueGetter: (params) => params.data?.name.value,
-    valueSetter: validatedValueSetter(validateStudentName)
+    valueSetter: validatedValueSetter()
   },
   {
     headerName: 'Last Name',
     field: 'lastName',
+    cellEditor: ValidatedTextCellEditor,
+    cellEditorParams: { validator: validateStudentName },
     valueGetter: (params) => params.data?.lastName.value,
-    valueSetter: validatedValueSetter(validateStudentName)
+    valueSetter: validatedValueSetter()
   },
   {
+    // TODO validator
     headerName: 'Birth Date',
     field: 'birthDate',
     cellEditor: 'agDateCellEditor',
     valueGetter: getStudentsBirthDate,
     valueFormatter: studentsBirthDateFormatter,
-    valueSetter: validatedValueSetter(validateBirthDate)
+    valueSetter: validatedValueSetter()
   },
   {
     headerName: 'Age',
@@ -62,29 +58,22 @@ export const studentsColDefs: ColDef<StudentsTableRowData>[] = [
   {
     headerName: 'Final Grade',
     field: 'finalGrade',
+    cellEditor: ValidatedTextCellEditor,
+    cellEditorParams: { validator: validateFinalGrade },
     valueGetter: (params) => params.data?.finalGrade.value,
-    valueSetter: validatedValueSetter(validateFinalGrade)
+    valueSetter: validatedValueSetter()
   },
   {
     headerName: 'Hobbies',
     field: 'hobbies',
+    cellEditor: ValidatedTextCellEditor,
+    cellEditorParams: { validator: validateHobbies },
     valueFormatter: studentsHobbiesFormatter,
     valueGetter: getStudentsHobbies,
-    valueSetter: validatedValueSetter(validateHobbies, (val) => {
-      if (!val.trim()) return []
+    valueSetter: validatedValueSetter((newValue) => {
+      if (!newValue.trim()) return []
 
-      return val.split(', ').map((hobby) => hobby.trim().replace(/\s+/g, ' '))
+      return newValue.split(', ').map((hobby) => hobby.trim().replace(/\s+/g, ' '))
     })
-  },
-  {
-    colId: 'edit',
-    headerName: 'Edit',
-    cellRenderer: StudentsTableActionsRenderer,
-    editable: false,
-    valueGetter: (params) => {
-      const isEditing = !!params.api.getEditingCells().length
-
-      return { isEditing }
-    }
   }
 ]
