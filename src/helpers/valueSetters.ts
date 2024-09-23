@@ -16,5 +16,5 @@ export const validatedValueSetter =
       value: shouldUpdate && newValue ? newValue : oldValue
     }
 
-    return false
+    return shouldUpdate && newValue
   }

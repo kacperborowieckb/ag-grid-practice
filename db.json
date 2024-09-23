@@ -1,13 +1,17 @@
 {
   "students": [
     {
-      "name": "John",
+      "id": "b8a7a293-63b4-40e0-8ae7-93270e4a8e95",
+      "name": "Johnny",
       "lastName": "Doe",
       "birthDate": 1061232000000,
       "finalGrade": 4,
-      "hobbies": ["Reading"]
+      "hobbies": [
+        "Reading"
+      ]
     },
     {
+      "id": "3450beff-b4e9-4b49-bcbc-3e1cce3b693b",
       "name": "Emily",
       "lastName": "Smith",
       "birthDate": 1078060800000,
@@ -15,20 +19,30 @@
       "hobbies": []
     },
     {
+      "id": "c1d72d3c-607f-4aa6-b4d1-cfd73885d63c",
       "name": "Michael",
       "lastName": "Johnson",
       "birthDate": 1066233600000,
       "finalGrade": 3,
-      "hobbies": ["Music", "Running", "Cycling"]
+      "hobbies": [
+        "Music",
+        "Running",
+        "Cycling"
+      ]
     },
     {
+      "id": "6fffc0d9-8451-4907-bb5e-91f0ec525f5d",
       "name": "Sarah",
       "lastName": "Williams",
       "birthDate": 1032213600000,
       "finalGrade": 4,
-      "hobbies": ["Cooking", "Gaming"]
+      "hobbies": [
+        "Cooking",
+        "Gaming"
+      ]
     },
     {
+      "id": "114a64f7-70f7-45b0-bb40-937be7b5de59",
       "name": "David",
       "lastName": "Brown",
       "birthDate": 1056998400000,
@@ -36,20 +50,28 @@
       "hobbies": []
     },
     {
+      "id": "c5b05695-4299-43fe-8e40-9bfb11768e48",
       "name": "Sophia",
       "lastName": "Garcia",
       "birthDate": 1090992000000,
       "finalGrade": 1,
-      "hobbies": ["Dancing"]
+      "hobbies": [
+        "Dancing"
+      ]
     },
     {
+      "id": "bc7f4f7f-7a66-4fa8-b58c-7b6d51b6e1e4",
       "name": "James",
       "lastName": "Martinez",
       "birthDate": 1072723200000,
       "finalGrade": 3,
-      "hobbies": ["Coding", "Chess"]
+      "hobbies": [
+        "Coding",
+        "Chess"
+      ]
     },
     {
+      "id": "3dba7350-2406-4a95-8f2d-8b85d28c702a",
       "name": "Olivia",
       "lastName": "Anderson",
       "birthDate": 1080652800000,
@@ -57,34 +79,50 @@
       "hobbies": []
     },
     {
+      "id": "7fceaa62-bf61-486d-b2e7-12153c9e5e1a",
       "name": "Liam",
       "lastName": "Thomas",
       "birthDate": 1066108800000,
       "finalGrade": 5,
-      "hobbies": ["Surfing", "Skiing"]
+      "hobbies": [
+        "Surfing",
+        "Skiing"
+      ]
     },
     {
+      "id": "e196b76a-5e45-4425-91a0-15988b2e1934",
       "name": "Mia",
       "lastName": "Hernandez",
       "birthDate": 1055308800000,
       "finalGrade": 2,
-      "hobbies": ["Drawing"]
+      "hobbies": [
+        "Drawing"
+      ]
     },
     {
+      "id": "6a9e2dc6-1071-4869-b46b-0c8e305b48b6",
       "name": "Alexander",
       "lastName": "Lopez",
       "birthDate": 1075881600000,
       "finalGrade": 1,
-      "hobbies": ["Piano", "Archery", "Shooting"]
+      "hobbies": [
+        "Piano",
+        "Archery",
+        "Shooting"
+      ]
     },
     {
+      "id": "fe55a634-dba1-4d56-996a-b98f39bbf747",
       "name": "Amelia",
       "lastName": "Gonzalez",
       "birthDate": 1044528000000,
       "finalGrade": 5,
-      "hobbies": ["Photography"]
+      "hobbies": [
+        "Photography"
+      ]
     },
     {
+      "id": "7bb45f5d-9dfb-4148-bb4e-dae4219097e1",
       "name": "Ethan",
       "lastName": "Wilson",
       "birthDate": 1081785600000,
@@ -92,20 +130,30 @@
       "hobbies": []
     },
     {
+      "id": "6d4449d5-d7e0-4026-8d5d-0aef86f16f93",
       "name": "Charlotte",
       "lastName": "White",
       "birthDate": 1056403200000,
       "finalGrade": 2,
-      "hobbies": ["Gardening", "Cooking"]
+      "hobbies": [
+        "Gardening",
+        "Cooking"
+      ]
     },
     {
+      "id": "fe728bfb-8233-4ebf-a155-6e675e97be49",
       "name": "Benjamin",
       "lastName": "Moore",
       "birthDate": 1073318400000,
       "finalGrade": 4,
-      "hobbies": ["Running", "Cycling", "Swimming"]
+      "hobbies": [
+        "Running",
+        "Cycling",
+        "Swimming"
+      ]
     },
     {
+      "id": "27863e55-4325-4971-81b9-34d24dd9a274",
       "name": "Ava",
       "lastName": "Taylor",
       "birthDate": 1057958400000,
@@ -113,20 +161,28 @@
       "hobbies": []
     },
     {
+      "id": "d5d7e7b0-b774-4d7c-8c2a-dc92b0b503da",
       "name": "Lucas",
       "lastName": "Davis",
       "birthDate": 1049587200000,
       "finalGrade": 5,
-      "hobbies": ["Football"]
+      "hobbies": [
+        "Football"
+      ]
     },
     {
+      "id": "a47330b1-711f-43ec-a380-846aa08493b5",
       "name": "Isabella",
       "lastName": "Miller",
       "birthDate": 1068268800000,
       "finalGrade": 3,
-      "hobbies": ["Running", "Painting"]
+      "hobbies": [
+        "Running",
+        "Painting"
+      ]
     },
     {
+      "id": "5b68c894-ea56-45f8-b08d-68e2d85f76df",
       "name": "Henry",
       "lastName": "Jackson",
       "birthDate": 1056950400000,
@@ -134,11 +190,17 @@
       "hobbies": []
     },
     {
+      "id": "9ba8278d-60f5-4890-a55b-0cba63d6e3bc",
       "name": "Grace",
       "lastName": "Martin",
       "birthDate": 1086432000000,
       "finalGrade": 4,
-      "hobbies": ["Baking", "Traveling", "Photography", "Dancing"]
+      "hobbies": [
+        "Baking",
+        "Traveling",
+        "Photography",
+        "Dancing"
+      ]
     }
   ]
 }

@@ -47,8 +47,8 @@ export const studentsColDefs: ColDef<StudentsTableRowData>[] = [
       max: new Date()
     },
     valueGetter: getStudentsBirthDate,
-    valueFormatter: studentsBirthDateFormatter,
-    valueSetter: validatedValueSetter()
+    valueSetter: validatedValueSetter(),
+    valueFormatter: studentsBirthDateFormatter
   },
   {
     headerName: 'Age',
@@ -68,12 +68,12 @@ export const studentsColDefs: ColDef<StudentsTableRowData>[] = [
     field: 'hobbies',
     cellEditor: ValidatedTextCellEditor,
     cellEditorParams: { validator: validateHobbies },
-    valueFormatter: studentsHobbiesFormatter,
     valueGetter: getStudentsHobbies,
     valueSetter: validatedValueSetter((newValue) => {
       if (!newValue.trim()) return []
 
       return newValue.split(', ').map((hobby) => hobby.trim().replace(/\s+/g, ' '))
-    })
+    }),
+    valueFormatter: studentsHobbiesFormatter
   }
 ]
