@@ -7,5 +7,5 @@ export const validateFinalGrade = (grade: string) => {
 }
 
 export const validateHobbies = (hobbies: string) => {
-  return /^\s*(?!,)(\d|\p{L}|\s)*(\s*,\s*(\d|\p{L}|\s)+)*\s*$/u.test(hobbies)
+  return /^\s*(?!,)([\d\p{L}]+(\s*,\s*[\d\p{L}]+)*)?\s*$/u.test(hobbies)
 }
