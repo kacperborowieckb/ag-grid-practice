@@ -13,7 +13,7 @@ export type StudentWithMetadata = {
 
 type StudentsStoreState = {
   students: StudentWithMetadata[] | null
-  isLoading: boolean
+  isLoading: Record<'fetchStudents' | 'updateStudents', boolean>
   error: string
 }
 
@@ -22,13 +22,16 @@ type DefaultStudentsActionProps = { onError?: (errorMessage: string) => void }
 export const useStudentsStore = defineStore('students', {
   state: (): StudentsStoreState => ({
     students: null,
-    isLoading: false,
+    isLoading: {
+      fetchStudents: false,
+      updateStudents: false
+    },
     error: ''
   }),
   actions: {
     async fetchStudents({ onError }: DefaultStudentsActionProps) {
       try {
-        this.isLoading = true
+        this.isLoading.fetchStudents = true
 
         const data = await api.students.getStudents()
 
@@ -44,13 +47,15 @@ export const useStudentsStore = defineStore('students', {
           onError && onError(this.error)
         }
       } finally {
-        this.isLoading = false
+        this.isLoading.fetchStudents = false
       }
     },
     async updateStudents({ onError }: DefaultStudentsActionProps) {
       if (!this.students) return
 
       try {
+        this.isLoading.updateStudents = true
+
         const studentsData = this.students?.map((student) => {
           const studentObj = {} as Student
 
@@ -70,6 +75,8 @@ export const useStudentsStore = defineStore('students', {
         if (error instanceof Error) {
           onError && onError(error.message)
         }
+      } finally {
+        this.isLoading.updateStudents = false
       }
     }
   }

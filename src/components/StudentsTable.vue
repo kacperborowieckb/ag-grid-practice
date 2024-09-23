@@ -10,7 +10,7 @@
       @gridReady="onGridReady"
     />
     <button class="students-table__button" :disabled="!canSubmit" @click="updateStudents">
-      Submit
+      {{ studentsStore.isLoading.updateStudents ? 'Loading..' : 'Submit' }}
     </button>
   </div>
 </template>
