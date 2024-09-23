@@ -1,18 +1,16 @@
 import type { ColDef } from 'ag-grid-community'
 
-import StudentsTableActionsRenderer from '@/components/StudentsTableActionsRenderer.vue'
 import type { StudentWithMetadata } from '@/stores/students'
 import {
   validateFinalGrade,
   validateStudentName,
-  validateBirthDate,
   validateHobbies
 } from '@/validators/studentsValidators'
+import ValidatedTextCellEditor from '@/components/ValidatedTextCellEditor.vue'
 
 import { getStudentsAge, getStudentsBirthDate, getStudentsHobbies } from './valueGetters'
 import { validatedValueSetter } from './valueSetters'
 import { studentsBirthDateFormatter, studentsHobbiesFormatter } from './valueFormatters'
-import ValidatedTextCellEditor from '@/components/ValidatedTextCellEditor.vue'
 
 export type StudentsTableRowData = StudentWithMetadata & {
   age: number
@@ -42,10 +40,12 @@ export const studentsColDefs: ColDef<StudentsTableRowData>[] = [
     valueSetter: validatedValueSetter()
   },
   {
-    // TODO validator
     headerName: 'Birth Date',
     field: 'birthDate',
     cellEditor: 'agDateCellEditor',
+    cellEditorParams: {
+      max: new Date()
+    },
     valueGetter: getStudentsBirthDate,
     valueFormatter: studentsBirthDateFormatter,
     valueSetter: validatedValueSetter()

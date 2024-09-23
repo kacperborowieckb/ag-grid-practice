@@ -50,14 +50,6 @@ const onEsc = () => {
   params.stopEditing(true)
 }
 
-const onEditingEnd = () => {
-  //   if (!isInvalid) return
-  //   console.log({ rowIndex: params.rowIndex, colKey: params.column.getColId() })
-  //   params.api.startEditingCell({ rowIndex: params.rowIndex, colKey: params.column.getColId() })
-
-  console.log('ds')
-}
-
 const getValue = () => inputValue.value
 
 onMounted(() => {

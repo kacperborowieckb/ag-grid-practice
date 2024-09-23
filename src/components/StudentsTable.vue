@@ -1,15 +1,18 @@
 <template>
-  <AgGridVue
-    class="students-table ag-theme-quartz-dark"
-    :columnDefs="studentsColDefs"
-    :defaultColDef="defaultStudentsColDef"
-    :rowData="studentsStore.students"
-    @gridReady="onGridReady"
-  />
+  <div class="students-table">
+    <AgGridVue
+      class="students-table__grid ag-theme-quartz-dark"
+      :columnDefs="studentsColDefs"
+      :defaultColDef="defaultStudentsColDef"
+      :rowData="studentsStore.students"
+      @gridReady="onGridReady"
+    />
+    <button class="students-table__button">Submit</button>
+  </div>
 </template>
 
 <script setup lang="ts">
-import { ref, shallowRef } from 'vue'
+import { shallowRef } from 'vue'
 import 'ag-grid-community/styles/ag-grid.css'
 import 'ag-grid-community/styles/ag-theme-quartz.css'
 import { AgGridVue } from 'ag-grid-vue3'
@@ -21,7 +24,6 @@ import { useGridError } from '@/composables/useGridError'
 
 const studentsStore = useStudentsStore()
 
-const rowEditDefaultData = ref<StudentWithMetadata | null>(null)
 const studentsTableApi = shallowRef<GridApi<StudentWithMetadata> | null>(null)
 
 const { showError } = useGridError(studentsTableApi)
@@ -41,6 +43,18 @@ const onGridReady = (params: GridReadyEvent) => {
 
 <style scoped lang="scss">
 .students-table {
-  height: 500px;
+  display: flex;
+  flex-direction: column;
+  gap: $space-sm;
+
+  &__grid {
+    height: 500px;
+  }
+
+  &__button {
+    margin-left: auto;
+    padding: $p-xs $p-sm;
+    cursor: pointer;
+  }
 }
 </style>

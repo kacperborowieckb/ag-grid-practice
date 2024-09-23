@@ -13,7 +13,7 @@ export const validatedValueSetter =
     params.data[field] = {
       ...params.data[field],
       isValidated: true,
-      value: shouldUpdate ? newValue : oldValue
+      value: shouldUpdate && newValue ? newValue : oldValue
     }
 
     return false
