@@ -26,14 +26,3 @@ body,
 #app {
     height: 100%;
 }
-
-.cell-error {
-    border: 2px solid rgba(220, 0, 0, 1) !important;
-}
-
-.action-container {
-    display: flex;
-    align-items: center;
-    gap: $space-xs;
-    height: 100%;
-}

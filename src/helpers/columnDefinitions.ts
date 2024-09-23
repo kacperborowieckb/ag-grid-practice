@@ -18,8 +18,7 @@ export type StudentsTableRowData = StudentWithMetadata & {
 
 export const defaultStudentsColDef: ColDef = {
   flex: 1,
-  editable: true,
-  enableCellChangeFlash: true
+  editable: true
 }
 
 export const studentsColDefs: ColDef<StudentsTableRowData>[] = [
