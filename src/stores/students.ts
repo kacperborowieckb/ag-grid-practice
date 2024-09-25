@@ -15,7 +15,6 @@ export type StudentWithMetadata = {
 type StudentsStoreState = {
   students: StudentWithMetadata[] | null
   isLoading: Record<'fetchStudents' | 'updateStudents', boolean>
-  error: string
 }
 
 type DefaultStudentsActionProps = {
@@ -29,8 +28,7 @@ export const useStudentsStore = defineStore('students', {
     isLoading: {
       fetchStudents: false,
       updateStudents: false
-    },
-    error: ''
+    }
   }),
   actions: {
     async fetchStudents({ onError }: DefaultStudentsActionProps = {}) {
@@ -46,9 +44,7 @@ export const useStudentsStore = defineStore('students', {
         this.students = getStudentsWithMetadata(data.data)
       } catch (error) {
         if (error instanceof Error) {
-          this.error = error.message
-
-          onError && onError(this.error)
+          onError && onError(error.message)
         }
       } finally {
         this.isLoading.fetchStudents = false
