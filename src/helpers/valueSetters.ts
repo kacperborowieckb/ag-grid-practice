@@ -8,13 +8,15 @@ export const setValidatedValue =
 
     const newValue = customSetter ? customSetter(params.newValue) : params.newValue
     const oldValue = customSetter ? customSetter(params.oldValue) : params.oldValue
-    const shouldUpdate = params.data[field].isValidated
+    const isValid = params.data[field].isValidated
+
+    const shouldUpdate = isValid && newValue
 
     params.data[field] = {
       ...params.data[field],
       isValidated: true,
-      value: shouldUpdate && newValue ? newValue : oldValue
+      value: shouldUpdate ? newValue : oldValue
     }
 
-    return shouldUpdate && newValue
+    return shouldUpdate
   }

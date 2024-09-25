@@ -8,9 +8,13 @@ import {
 } from '@/validators/studentsValidators'
 import ValidatedTextCellEditor from '@/components/ValidatedTextCellEditor.vue'
 
-import { getStudentsAge, getStudentsBirthDate, getStudentsHobbies } from './valueGetters'
 import { setValidatedValue } from './valueSetters'
 import { formatStudentsBirthDate, formatStudentsHobbies } from './valueFormatters'
+import { 
+  getStudentsAge, 
+  getStudentsBirthDate, 
+  getStudentsHobbies
+} from './valueGetters'
 
 export type StudentsTableRowData = StudentWithMetadata & {
   age: number

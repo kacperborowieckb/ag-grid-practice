@@ -7,6 +7,7 @@ export function getStudentsWithMetadata(students: Student[]): StudentWithMetadat
 
     Object.keys(student).forEach((key) => {
       studentWithMetadata[key as keyof Student] = {
+        // didn't find a way to properly type this, please let me know how I should handle this 🙏
         // @ts-ignore
         value: student[key],
         isValidated: true

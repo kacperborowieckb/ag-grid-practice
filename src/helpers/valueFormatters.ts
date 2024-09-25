@@ -12,11 +12,11 @@ export const formatStudentsBirthDate = (params: StudentsFormatterParams) => {
   const isCelebratingBirthday =
     birthday.getMonth() === today.getMonth() && birthday.getDate() === today.getDate()
 
-  return `${birthday.toLocaleDateString('en-GB')} ${isCelebratingBirthday ? '🎂' : ''}`.trim()
+  return `${birthday.toLocaleDateString('en-GB')} ${isCelebratingBirthday && '🎂'}`.trim()
 }
 
 export const formatStudentsHobbies = (params: StudentsFormatterParams) => {
-  const hobbies = params.data?.hobbies.value
+  const hobbies = params.data?.hobbies.value || []
 
-  return hobbies?.length ? hobbies.join(', ') : 'No hobbies.'
+  return hobbies.join(', ') || 'No hobbies.'
 }
