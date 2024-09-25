@@ -1,3 +1,5 @@
+import type { ValueSetterParams } from 'ag-grid-community'
+
 import type { Student } from '@/services/students'
 
 export const generateMockParamsData = <T extends keyof Student>(field: T, date?: Student[T]) =>
@@ -23,5 +25,5 @@ export const generateMockSetterParams = ({
     data: { [field]: { value: oldValue, isValidated: isValidated } },
     newValue: newValue,
     oldValue
-  }
+  } as Partial<ValueSetterParams>
 }

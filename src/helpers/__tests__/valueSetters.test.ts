@@ -30,7 +30,7 @@ describe('value setters', () => {
     })
 
     test('should return false when field is not available', () => {
-      mockParams.colDef.field = ''
+      mockParams.colDef = undefined
 
       expect(setValidatedValue()(mockParams as any)).toBe(false)
     })

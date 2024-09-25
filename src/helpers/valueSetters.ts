@@ -2,7 +2,7 @@ import type { ValueSetterParams } from 'ag-grid-community'
 
 export const setValidatedValue =
   (customSetter?: (value: string) => void) => (params: ValueSetterParams) => {
-    const field = params.colDef.field
+    const field = params.colDef?.field
 
     if (!field) return false
 
