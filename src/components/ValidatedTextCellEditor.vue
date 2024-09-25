@@ -11,7 +11,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted, computed } from 'vue'
+import { ref, computed } from 'vue'
 import type { ITextCellEditorParams } from 'ag-grid-community'
 
 type ValidatedTextCellEditorProps = {
@@ -25,22 +25,16 @@ const inputRef = ref<HTMLInputElement | null>(null)
 const inputValue = ref<string>(params.value)
 
 const isValid = computed(() => {
-  const isValid = params.validator(inputValue.value)
   const field = params.colDef.field
 
   if (!field) return
 
-  params.data[field].isValidated = isValid
+  const validationResult = params.validator(inputValue.value)
 
-  return isValid
+  params.data[field].isValidated = validationResult
+
+  return validationResult
 })
-
-const afterGuiAttached = () => {
-  if (inputRef.value) {
-    inputRef.value.focus()
-    inputRef.value.select()
-  }
-}
 
 const onEnter = () => {
   params.stopEditing()
@@ -51,10 +45,6 @@ const onEsc = () => {
 }
 
 const getValue = () => inputValue.value
-
-onMounted(() => {
-  afterGuiAttached()
-})
 </script>
 
 <style lang="scss">
