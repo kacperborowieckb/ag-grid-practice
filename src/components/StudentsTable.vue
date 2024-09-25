@@ -2,30 +2,34 @@
   <div class="students-table">
     <AgGridVue
       class="students-table__grid ag-theme-quartz-dark"
-      :loading="studentsStore.isLoading['fetchStudents']"
+      :loading="studentsStore.isLoading.fetchStudents"
       :rowData="studentsStore.students"
       :columnDefs="studentsColDefs"
       :defaultColDef="defaultStudentsColDef"
+      @gridReady="onGridReady"
       @cellEditingStarted="onCellEditingStarted"
       @cellEditingStopped="onCellEditingStopped"
-      @gridReady="onGridReady"
     />
     <button
       class="students-table__button"
-      :disabled="!canSubmit || studentsStore.isLoading.updateStudents"
+      :disabled="isSubmitDisabled"
       @click="updateStudents"
     >
-      {{ studentsStore.isLoading.updateStudents ? 'Loading..' : 'Submit' }}
+      {{ submitButtonMessage }}
     </button>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, shallowRef } from 'vue'
+import { computed, ref, shallowRef } from 'vue'
 import 'ag-grid-community/styles/ag-grid.css'
 import 'ag-grid-community/styles/ag-theme-quartz.css'
 import { AgGridVue } from 'ag-grid-vue3'
-import type { GridApi, GridReadyEvent, CellEditingStoppedEvent } from 'ag-grid-community'
+import type { 
+  GridApi, 
+  GridReadyEvent,
+  CellEditingStoppedEvent 
+} from 'ag-grid-community'
 
 import { useStudentsStore, type StudentWithMetadata } from '@/stores/students'
 import { defaultStudentsColDef, studentsColDefs } from '@/helpers/columnDefinitions'
@@ -37,7 +41,16 @@ const canSubmit = ref(false)
 const someValueChanged = ref(false)
 const studentsTableApi = shallowRef<GridApi<StudentWithMetadata> | null>(null)
 
+const isSubmitDisabled = computed(() => !canSubmit.value || studentsStore.isLoading.updateStudents)
+const submitButtonMessage = computed(() => studentsStore.isLoading.updateStudents ? 'Loading..' : 'Submit')
+
 const { showError } = useGridError(studentsTableApi)
+
+const onGridReady = (params: GridReadyEvent) => {
+  studentsTableApi.value = params.api
+  
+  studentsStore.fetchStudents({ onError: onFetchStudentsError })
+}
 
 const onFetchStudentsError = (fetchStudentsErrorMessage: string) => {
   if (!studentsTableApi.value) return
@@ -45,10 +58,14 @@ const onFetchStudentsError = (fetchStudentsErrorMessage: string) => {
   showError(`Failed to fetch, please refresh the page. ${fetchStudentsErrorMessage}`)
 }
 
-const onGridReady = (params: GridReadyEvent) => {
-  studentsTableApi.value = params.api
+const onCellEditingStarted = () => {
+  canSubmit.value = false
+}
 
-  studentsStore.fetchStudents({ onError: onFetchStudentsError })
+const onCellEditingStopped = (params: CellEditingStoppedEvent) => {
+  if (params.valueChanged) someValueChanged.value = true
+  
+  if (someValueChanged.value) canSubmit.value = true
 }
 
 const updateStudents = () => {
@@ -59,16 +76,6 @@ const updateStudents = () => {
       someValueChanged.value = false
     }
   })
-}
-
-const onCellEditingStarted = () => {
-  canSubmit.value = false
-}
-
-const onCellEditingStopped = (params: CellEditingStoppedEvent) => {
-  if (params.valueChanged) someValueChanged.value = true
-
-  if (someValueChanged.value) canSubmit.value = true
 }
 </script>
 
