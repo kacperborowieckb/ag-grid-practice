@@ -2,7 +2,7 @@ import type { ValueFormatterParams } from 'ag-grid-community'
 
 import type { StudentsTableRowData } from './columnDefinitions'
 
-type StudentsFormatterParams = ValueFormatterParams<StudentsTableRowData>
+export type StudentsFormatterParams = ValueFormatterParams<StudentsTableRowData>
 
 export const formatStudentsBirthDate = (params: StudentsFormatterParams) => {
   if (!params.data?.birthDate.value) return ''

@@ -11,9 +11,11 @@ export const getStudentsBirthDate = (params: StudentsGetterParams) => {
 }
 
 export const getStudentsAge = (params: StudentsGetterParams) => {
-  if (!params.data?.birthDate.value) return ''
+  const birthDate = params.data?.birthDate.value
 
-  return (new Date().getFullYear() - new Date(params.data.birthDate.value).getFullYear()).toString()
+  if (!birthDate) return ''
+
+  return (new Date().getFullYear() - new Date(birthDate).getFullYear()).toString()
 }
 
 export const getStudentsHobbies = (params: StudentsGetterParams) => {

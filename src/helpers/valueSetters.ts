@@ -18,5 +18,5 @@ export const setValidatedValue =
       value: shouldUpdate ? newValue : oldValue
     }
 
-    return shouldUpdate
+    return !!shouldUpdate
   }
