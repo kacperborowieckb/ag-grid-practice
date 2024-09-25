@@ -1,10 +1,6 @@
 import type { ColDef } from 'ag-grid-community'
 
-import {
-  studentsAgeGetter,
-  studentsBirthDateGetter,
-  studentsHobbiesGetter
-} from '@/helpers/valueGetters'
+import { getStudentsAge, getStudentsBirthDate, getStudentsHobbies } from '@/helpers/valueGetters'
 import type { Student } from '@/services/students'
 
 export type StudentsTableRowData = Student & {
@@ -25,11 +21,11 @@ export const studentsColDefs: ColDef<StudentsTableRowData>[] = [
   {
     headerName: 'Birth Date',
     field: 'birthDate',
-    valueGetter: studentsBirthDateGetter
+    valueGetter: getStudentsBirthDate
   },
   {
     headerName: 'Age',
-    valueGetter: studentsAgeGetter
+    valueGetter: getStudentsAge
   },
   {
     headerName: 'Final Grade',
@@ -38,6 +34,6 @@ export const studentsColDefs: ColDef<StudentsTableRowData>[] = [
   {
     headerName: 'Hobbies',
     field: 'hobbies',
-    valueGetter: studentsHobbiesGetter
+    valueGetter: getStudentsHobbies
   }
 ]

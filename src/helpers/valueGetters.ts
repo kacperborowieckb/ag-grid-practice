@@ -4,11 +4,13 @@ import type { StudentsTableRowData } from '@/helpers/columnDefinitions'
 
 type StudentsGetterParams<T> = ValueGetterParams<StudentsTableRowData, T>
 
-export const studentsHobbiesGetter = (params: StudentsGetterParams<string[]>) => {
-  return params.data?.hobbies?.length ? params.data.hobbies.join(', ') : 'No hobbies.'
+export const getStudentsHobbies = (params: StudentsGetterParams<string[]>) => {
+  const hobbies = params.data?.hobbies || []
+
+  return hobbies.join(', ') || 'No hobbies.'
 }
 
-export const studentsBirthDateGetter = (params: StudentsGetterParams<number>) => {
+export const getStudentsBirthDate = (params: StudentsGetterParams<number>) => {
   if (!params.data?.birthDate) return ''
 
   const birthday = new Date(params.data.birthDate)
@@ -20,7 +22,7 @@ export const studentsBirthDateGetter = (params: StudentsGetterParams<number>) =>
   return `${birthday.toLocaleDateString()} ${isCelebratingBirthday ? '🎂' : ''}`.trim()
 }
 
-export const studentsAgeGetter = (params: StudentsGetterParams<number>) => {
+export const getStudentsAge = (params: StudentsGetterParams<number>) => {
   if (!params.data?.birthDate) return ''
 
   return (new Date().getFullYear() - new Date(params.data.birthDate).getFullYear()).toString()
