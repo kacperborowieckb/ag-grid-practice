@@ -13,6 +13,7 @@ import { getStudentsWithMetadata } from '@/helpers/metadataMappers'
 import { api } from '@/services'
 import type { Student } from '@/services/students'
 import type { AxiosResponse } from 'axios'
+import { mockStudentsData } from '@/mocks/mockStudentsData'
 
 const ensureGridApiHasBeenSet = (vm: any) =>
   new Promise<void>(function (resolve) {
@@ -24,29 +25,6 @@ const ensureGridApiHasBeenSet = (vm: any) =>
       setTimeout(waitForGridReady, 20)
     })()
   })
-
-const mockStudentsData = [
-  {
-    id: 'b8a7a293-63b4-40e0-8ae7-93270e4a8e95',
-    name: 'John',
-    lastName: 'Doe',
-    birthDate: 1061232000000,
-    finalGrade: 4,
-    hobbies: ['Reading']
-  },
-  {
-    id: '3450beff-b4e9-4b49-bcbc-3e1cce3b693b',
-    name: 'Emily',
-    lastName: 'Smith',
-    birthDate: new Date(
-      new Date().getFullYear(),
-      new Date().getMonth(),
-      new Date().getDate()
-    ).getTime(),
-    finalGrade: 5,
-    hobbies: []
-  }
-] as Student[]
 
 const getStudentsSpy = vi
   .spyOn(api.students, 'getStudents')
