@@ -10,7 +10,11 @@
       @cellEditingStopped="onCellEditingStopped"
       @gridReady="onGridReady"
     />
-    <button class="students-table__button" :disabled="!canSubmit" @click="updateStudents">
+    <button
+      class="students-table__button"
+      :disabled="!canSubmit || studentsStore.isLoading.updateStudents"
+      @click="updateStudents"
+    >
       {{ studentsStore.isLoading.updateStudents ? 'Loading..' : 'Submit' }}
     </button>
   </div>
@@ -48,7 +52,13 @@ const onGridReady = (params: GridReadyEvent) => {
 }
 
 const updateStudents = () => {
-  studentsStore.updateStudents({ onError: (errorMessage: string) => alert(errorMessage) })
+  studentsStore.updateStudents({
+    onError: (errorMessage: string) => alert(errorMessage),
+    onSuccess: () => {
+      canSubmit.value = false
+      someValueChanged.value = false
+    }
+  })
 }
 
 const onCellEditingStarted = () => {

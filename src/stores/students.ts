@@ -17,7 +17,10 @@ type StudentsStoreState = {
   error: string
 }
 
-type DefaultStudentsActionProps = { onError?: (errorMessage: string) => void }
+type DefaultStudentsActionProps = {
+  onError?: (errorMessage: string) => void
+  onSuccess?: () => void
+}
 
 export const useStudentsStore = defineStore('students', {
   state: (): StudentsStoreState => ({
@@ -50,7 +53,7 @@ export const useStudentsStore = defineStore('students', {
         this.isLoading.fetchStudents = false
       }
     },
-    async updateStudents({ onError }: DefaultStudentsActionProps = {}) {
+    async updateStudents({ onError, onSuccess }: DefaultStudentsActionProps = {}) {
       if (!this.students) return
 
       try {
@@ -71,6 +74,8 @@ export const useStudentsStore = defineStore('students', {
         if (data.some(({ status }) => status !== 200)) {
           throw new Error('Fetching students failed')
         }
+
+        onSuccess && onSuccess()
       } catch (error) {
         if (error instanceof Error) {
           onError && onError(error.message)

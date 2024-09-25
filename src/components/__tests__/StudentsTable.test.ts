@@ -301,7 +301,7 @@ describe('StudentsTable', () => {
       ])
     })
 
-    test('should display loading state in button when updating students', async () => {
+    test('should display loading state in button and be disabled while updating students', async () => {
       updateStudentsSpy.mockImplementationOnce(() => new Promise(() => {}))
 
       const submitButton = wrapper.find('.students-table__button')
@@ -316,6 +316,25 @@ describe('StudentsTable', () => {
       await submitButton.trigger('click')
 
       expect(submitButton.text()).toContain('Loading')
+      expect(submitButton.attributes('disabled')).toBeDefined()
+    })
+
+    test('should be disabled after updating students and do not contain loading state', async () => {
+      updateStudentsSpy.mockImplementationOnce(() => Promise.resolve([]))
+
+      const submitButton = wrapper.find('.students-table__button')
+
+      gridApi.startEditingCell({ rowIndex: 0, colKey: 'name' })
+      await wrapper.find('input[type="text"]').setValue('Johnny')
+
+      gridApi.stopEditing()
+
+      await flushPromises()
+
+      await submitButton.trigger('click')
+
+      expect(submitButton.text()).toContain('Submit')
+      expect(submitButton.attributes('disabled')).toBeDefined()
     })
 
     test('should display alert if updating students failed', async () => {
