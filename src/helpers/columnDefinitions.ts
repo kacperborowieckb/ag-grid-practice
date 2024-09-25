@@ -50,6 +50,7 @@ export const studentsColDefs: ColDef<StudentsTableRowData>[] = [
     valueFormatter: studentsBirthDateFormatter
   },
   {
+    colId: 'age',
     headerName: 'Age',
     valueGetter: getStudentsAge,
     editable: false

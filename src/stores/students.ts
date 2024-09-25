@@ -29,7 +29,7 @@ export const useStudentsStore = defineStore('students', {
     error: ''
   }),
   actions: {
-    async fetchStudents({ onError }: DefaultStudentsActionProps) {
+    async fetchStudents({ onError }: DefaultStudentsActionProps = {}) {
       try {
         this.isLoading.fetchStudents = true
 
@@ -50,7 +50,7 @@ export const useStudentsStore = defineStore('students', {
         this.isLoading.fetchStudents = false
       }
     },
-    async updateStudents({ onError }: DefaultStudentsActionProps) {
+    async updateStudents({ onError }: DefaultStudentsActionProps = {}) {
       if (!this.students) return
 
       try {

@@ -2,6 +2,7 @@
   <div class="students-table">
     <AgGridVue
       class="students-table__grid ag-theme-quartz-dark"
+      :loading="studentsStore.isLoading['fetchStudents']"
       :rowData="studentsStore.students"
       :columnDefs="studentsColDefs"
       :defaultColDef="defaultStudentsColDef"
@@ -47,7 +48,7 @@ const onGridReady = (params: GridReadyEvent) => {
 }
 
 const updateStudents = () => {
-  studentsStore.updateStudents({ onError: () => alert('Submitting failed') })
+  studentsStore.updateStudents({ onError: (errorMessage: string) => alert(errorMessage) })
 }
 
 const onCellEditingStarted = () => {
