@@ -1,6 +1,6 @@
 import type { ValueSetterParams } from 'ag-grid-community'
 
-export const validatedValueSetter =
+export const setValidatedValue =
   (customSetter?: (value: string) => void) => (params: ValueSetterParams) => {
     const field = params.colDef.field
 

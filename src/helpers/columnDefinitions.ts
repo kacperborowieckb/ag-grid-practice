@@ -9,8 +9,8 @@ import {
 import ValidatedTextCellEditor from '@/components/ValidatedTextCellEditor.vue'
 
 import { getStudentsAge, getStudentsBirthDate, getStudentsHobbies } from './valueGetters'
-import { validatedValueSetter } from './valueSetters'
-import { studentsBirthDateFormatter, studentsHobbiesFormatter } from './valueFormatters'
+import { setValidatedValue } from './valueSetters'
+import { formatStudentsBirthDate, formatStudentsHobbies } from './valueFormatters'
 
 export type StudentsTableRowData = StudentWithMetadata & {
   age: number
@@ -28,7 +28,7 @@ export const studentsColDefs: ColDef<StudentsTableRowData>[] = [
     cellEditor: ValidatedTextCellEditor,
     cellEditorParams: { validator: validateStudentName },
     valueGetter: (params) => params.data?.name.value,
-    valueSetter: validatedValueSetter()
+    valueSetter: setValidatedValue()
   },
   {
     headerName: 'Last Name',
@@ -36,7 +36,7 @@ export const studentsColDefs: ColDef<StudentsTableRowData>[] = [
     cellEditor: ValidatedTextCellEditor,
     cellEditorParams: { validator: validateStudentName },
     valueGetter: (params) => params.data?.lastName.value,
-    valueSetter: validatedValueSetter()
+    valueSetter: setValidatedValue()
   },
   {
     headerName: 'Birth Date',
@@ -46,8 +46,8 @@ export const studentsColDefs: ColDef<StudentsTableRowData>[] = [
       max: new Date()
     },
     valueGetter: getStudentsBirthDate,
-    valueSetter: validatedValueSetter(),
-    valueFormatter: studentsBirthDateFormatter
+    valueSetter: setValidatedValue(),
+    valueFormatter: formatStudentsBirthDate
   },
   {
     colId: 'age',
@@ -61,7 +61,7 @@ export const studentsColDefs: ColDef<StudentsTableRowData>[] = [
     cellEditor: ValidatedTextCellEditor,
     cellEditorParams: { validator: validateFinalGrade },
     valueGetter: (params) => params.data?.finalGrade.value,
-    valueSetter: validatedValueSetter()
+    valueSetter: setValidatedValue()
   },
   {
     headerName: 'Hobbies',
@@ -69,11 +69,11 @@ export const studentsColDefs: ColDef<StudentsTableRowData>[] = [
     cellEditor: ValidatedTextCellEditor,
     cellEditorParams: { validator: validateHobbies },
     valueGetter: getStudentsHobbies,
-    valueSetter: validatedValueSetter((newValue) => {
+    valueSetter: setValidatedValue((newValue) => {
       if (!newValue.trim()) return []
 
       return newValue.split(', ').map((hobby) => hobby.trim().replace(/\s+/g, ' '))
     }),
-    valueFormatter: studentsHobbiesFormatter
+    valueFormatter: formatStudentsHobbies
   }
 ]

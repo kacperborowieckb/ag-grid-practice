@@ -9,7 +9,7 @@ import type { GridApi } from 'ag-grid-community'
 
 import StudentsTable from '@/components/StudentsTable.vue'
 import { type StudentWithMetadata, useStudentsStore } from '@/stores/students'
-import { getStudentsWithMetadata } from '@/helpers/metadataAdders'
+import { getStudentsWithMetadata } from '@/helpers/metadataMappers'
 import { api } from '@/services'
 import type { Student } from '@/services/students'
 import type { AxiosResponse } from 'axios'

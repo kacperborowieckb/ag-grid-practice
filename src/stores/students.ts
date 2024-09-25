@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 
 import { api } from '@/services'
 import type { Student } from '@/services/students'
-import { getStudentsWithMetadata } from '@/helpers/metadataAdders'
+import { getStudentsWithMetadata } from '@/helpers/metadataMappers'
 
 export type StudentWithMetadata = {
   [T in keyof Student]: {

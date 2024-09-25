@@ -3,7 +3,7 @@ import type { ValueFormatterParams } from 'ag-grid-community'
 
 type StudentsFormatterParams = ValueFormatterParams<StudentsTableRowData>
 
-export const studentsBirthDateFormatter = (params: StudentsFormatterParams) => {
+export const formatStudentsBirthDate = (params: StudentsFormatterParams) => {
   if (!params.data?.birthDate.value) return ''
 
   const birthday = new Date(params.data.birthDate.value)
@@ -15,7 +15,7 @@ export const studentsBirthDateFormatter = (params: StudentsFormatterParams) => {
   return `${birthday.toLocaleDateString('en-GB')} ${isCelebratingBirthday ? '🎂' : ''}`.trim()
 }
 
-export const studentsHobbiesFormatter = (params: StudentsFormatterParams) => {
+export const formatStudentsHobbies = (params: StudentsFormatterParams) => {
   const hobbies = params.data?.hobbies.value
 
   return hobbies?.length ? hobbies.join(', ') : 'No hobbies.'
