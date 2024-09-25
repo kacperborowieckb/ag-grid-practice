@@ -1,7 +1,7 @@
 import type { Student } from '@/services/students'
 import type { StudentWithMetadata } from '@/stores/students'
 
-export function getStudentsWithMetadata(students: Student[]): StudentWithMetadata[] {
+export const getStudentsWithMetadata = (students: Student[]): StudentWithMetadata[] => {
   return students.map((student) => {
     const studentWithMetadata = {} as StudentWithMetadata
 

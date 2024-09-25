@@ -3,6 +3,7 @@ import { defineStore } from 'pinia'
 import { api } from '@/services'
 import type { Student } from '@/services/students'
 import { getStudentsWithMetadata } from '@/helpers/metadataMappers'
+import { removeStudentsMetadata } from '@/helpers/metadataRemovers'
 
 export type StudentWithMetadata = {
   [T in keyof Student]: {
@@ -59,17 +60,7 @@ export const useStudentsStore = defineStore('students', {
       try {
         this.isLoading.updateStudents = true
 
-        const studentsData = this.students?.map((student) => {
-          const studentObj = {} as Student
-
-          Object.entries(student).forEach(([key, value]) => {
-            //@ts-ignore
-            studentObj[key] = value.value
-          })
-
-          return studentObj
-        })
-        const data = await api.students.updateStudents(studentsData)
+        const data = await api.students.updateStudents(removeStudentsMetadata(this.students))
 
         if (data.some(({ status }) => status !== 200)) {
           throw new Error('Fetching students failed')
