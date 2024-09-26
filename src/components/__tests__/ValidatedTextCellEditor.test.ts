@@ -53,6 +53,10 @@ describe('ValidatedTextCellEditor', () => {
     expect(getFieldData().isValidated).toBe(true)
   })
 
+  test('should have isValid set to true', () => {
+    expect((wrapper.vm as any).isValid).toBe(true)
+  })
+
   test('should change value in model and not in params', async () => {
     await wrapper.find('input').setValue('Johnny')
 
@@ -90,5 +94,19 @@ describe('ValidatedTextCellEditor', () => {
     await input.setValue('Johnny')
 
     expect(getFieldData().isValidated).toBe(true)
+  })
+
+  test('should set validation state based on based on validation status', async () => {
+    const input = wrapper.find('input')
+
+    expect((wrapper.vm as any).isValid).toBe(true)
+
+    await input.setValue('Joh')
+
+    expect((wrapper.vm as any).isValid).toBe(false)
+
+    await input.setValue('Johnny')
+
+    expect((wrapper.vm as any).isValid).toBe(true)
   })
 })
