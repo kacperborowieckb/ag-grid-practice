@@ -1,10 +1,7 @@
-<template></template>
+<template>
+  <StudentsTable />
+</template>
 
-<script setup lang="ts"></script>
-
-<style scoped lang="scss">
-body {
-  padding: 2rem;
-  background-color: red;
-}
-</style>
+<script setup lang="ts">
+import StudentsTable from '@/components/StudentsTable.vue'
+</script>

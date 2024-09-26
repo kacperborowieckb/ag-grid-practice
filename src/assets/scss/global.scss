@@ -16,6 +16,9 @@ body {
     box-sizing: border-box;
     overflow: hidden;
     font-family: "Inter", sans-serif;
+    color: $clr-white;
+    background-color: $clr-bg;
+    padding: $p-xl;
 }
 
 html,
