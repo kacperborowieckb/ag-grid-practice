@@ -56,6 +56,14 @@ describe('studentsStore', () => {
 
       expect(mockOnError).toBeCalledWith(errorMessage)
     })
+
+    test('should call onError method if getStudents respond with status different than 200', async () => {
+      getStudentsSpy.mockResolvedValueOnce({ status: 404 } as any)
+
+      await mockStudentsStore.fetchStudents({ onError: mockOnError })
+
+      expect(mockOnError).toBeCalled()
+    })
   })
 
   describe('updateStudents', () => {
@@ -101,6 +109,24 @@ describe('studentsStore', () => {
       await mockStudentsStore.updateStudents({ onError: mockOnError })
 
       expect(mockOnError).toBeCalledWith(errorMessage)
+    })
+
+    test('should not call onSuccess method if updateStudents throw', async () => {
+      updateStudentsSpy.mockImplementationOnce(() => {
+        throw new Error()
+      })
+
+      await mockStudentsStore.updateStudents({ onSuccess: mockOnSuccess })
+
+      expect(mockOnSuccess).not.toBeCalled()
+    })
+
+    test('should call onError method if updateStudents respond with status different than 200', async () => {
+      updateStudentsSpy.mockResolvedValueOnce([{ status: 404 }] as any)
+
+      await mockStudentsStore.updateStudents({ onError: mockOnError })
+
+      expect(mockOnError).toBeCalled()
     })
 
     test('should call onSuccess method if updateStudents success', async () => {
