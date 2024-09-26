@@ -10,9 +10,9 @@
       @cellEditingStarted="onCellEditingStarted"
       @cellEditingStopped="onCellEditingStopped"
     />
-    <button
-      class="students-table__button"
-      :disabled="isSubmitDisabled"
+    <button 
+      class="students-table__button" 
+      :disabled="isSubmitDisabled" 
       @click="updateStudents"
     >
       {{ submitButtonMessage }}
@@ -22,14 +22,10 @@
 
 <script setup lang="ts">
 import { computed, ref, shallowRef } from 'vue'
+import { AgGridVue } from 'ag-grid-vue3'
+import type { GridApi, GridReadyEvent, CellEditingStoppedEvent } from 'ag-grid-community'
 import 'ag-grid-community/styles/ag-grid.css'
 import 'ag-grid-community/styles/ag-theme-quartz.css'
-import { AgGridVue } from 'ag-grid-vue3'
-import type { 
-  GridApi, 
-  GridReadyEvent,
-  CellEditingStoppedEvent 
-} from 'ag-grid-community'
 
 import { useStudentsStore, type StudentWithMetadata } from '@/stores/students'
 import { defaultStudentsColDef, studentsColDefs } from '@/helpers/columnDefinitions'
@@ -42,13 +38,15 @@ const someValueChanged = ref(false)
 const studentsTableApi = shallowRef<GridApi<StudentWithMetadata> | null>(null)
 
 const isSubmitDisabled = computed(() => !canSubmit.value || studentsStore.isLoading.updateStudents)
-const submitButtonMessage = computed(() => studentsStore.isLoading.updateStudents ? 'Loading..' : 'Submit')
+const submitButtonMessage = computed(() =>
+  studentsStore.isLoading.updateStudents ? 'Loading..' : 'Submit'
+)
 
 const { showError } = useGridError(studentsTableApi)
 
 const onGridReady = (params: GridReadyEvent) => {
   studentsTableApi.value = params.api
-  
+
   studentsStore.fetchStudents({ onError: onFetchStudentsError })
 }
 
@@ -64,7 +62,7 @@ const onCellEditingStarted = () => {
 
 const onCellEditingStopped = (params: CellEditingStoppedEvent) => {
   if (params.valueChanged) someValueChanged.value = true
-  
+
   if (someValueChanged.value) canSubmit.value = true
 }
 

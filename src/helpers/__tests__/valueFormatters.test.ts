@@ -1,5 +1,6 @@
 import { describe, expect, test } from 'vitest'
-import { formatStudentsBirthDate, formatStudentsHobbies } from '../valueFormatters'
+
+import { formatStudentsBirthDate, formatStudentsHobbies } from '@/helpers/valueFormatters'
 import { generateMockParamsData } from '@/utils/testing'
 
 describe('value formatters', () => {

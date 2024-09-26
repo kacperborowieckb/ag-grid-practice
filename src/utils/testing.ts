@@ -2,6 +2,17 @@ import type { ValueSetterParams } from 'ag-grid-community'
 
 import type { Student } from '@/services/students'
 
+export const ensureGridApiHasBeenSet = (vm: any) =>
+  new Promise<void>(function (resolve) {
+    ;(function waitForGridReady() {
+      if (vm.studentsTableApi) {
+        return resolve()
+      }
+
+      setTimeout(waitForGridReady, 20)
+    })()
+  })
+
 export const generateMockParamsData = <T extends keyof Student>(field: T, date?: Student[T]) =>
   ({
     data: { [field]: { value: date, isValidated: true } }

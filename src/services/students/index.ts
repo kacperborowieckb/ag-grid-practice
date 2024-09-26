@@ -1,5 +1,6 @@
 import http from '@/services/api'
-import { endpoints } from '../index'
+
+import { endpoints } from '@/services/index'
 
 export type Student = {
   id: string

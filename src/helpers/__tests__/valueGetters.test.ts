@@ -1,7 +1,7 @@
 import { describe, expect, test } from 'vitest'
 
 import { generateMockParamsData } from '@/utils/testing'
-import { getStudentsAge, getStudentsBirthDate, getStudentsHobbies } from '../valueGetters'
+import { getStudentsAge, getStudentsBirthDate, getStudentsHobbies } from '@/helpers/valueGetters'
 
 describe('value getters', () => {
   describe('getStudentsBirthDate', () => {

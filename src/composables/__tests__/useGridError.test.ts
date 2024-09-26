@@ -1,7 +1,8 @@
 import { beforeEach, describe, expect, test, vi } from 'vitest'
-import type { GridApi } from 'ag-grid-community'
-import { useGridError } from '../useGridError'
 import type { ShallowRef } from 'vue'
+import type { GridApi } from 'ag-grid-community'
+
+import { useGridError } from '@/composables/useGridError'
 
 describe('useGridError', () => {
   let showErrorFn: (errorMessage: string) => void

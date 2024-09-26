@@ -1,6 +1,7 @@
-import { generateMockSetterParams } from '@/utils/testing'
 import { beforeEach, describe, expect, test } from 'vitest'
-import { setValidatedValue } from '../valueSetters'
+
+import { generateMockSetterParams } from '@/utils/testing'
+import { setValidatedValue } from '@/helpers/valueSetters'
 
 describe('value setters', () => {
   describe('setValidatedValue', () => {

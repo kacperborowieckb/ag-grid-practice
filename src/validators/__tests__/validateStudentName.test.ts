@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest'
-import { validateStudentName } from '../studentsValidators'
+
+import { validateStudentName } from '@/validators/studentsValidators'
 
 describe('validateStudentName', () => {
   it('should return true for valid names', () => {

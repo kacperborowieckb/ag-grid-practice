@@ -1,7 +1,7 @@
 import { describe, expect, test } from 'vitest'
 
 import { mockStudentsData, mockStudentsDataWithMetadata } from '@/mocks/mockStudentsData'
-import { removeStudentsMetadata } from '../metadataRemovers'
+import { removeStudentsMetadata } from '@/helpers/metadataRemovers'
 
 describe('metadata mappers', () => {
   describe('getStudentsWithMetadata', () => {
