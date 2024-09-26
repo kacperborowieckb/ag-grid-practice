@@ -6,30 +6,20 @@ import { beforeEach, describe, expect, test, vi } from 'vitest'
 import { createPinia, setActivePinia } from 'pinia'
 import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
 import type { GridApi } from 'ag-grid-community'
-import type { AxiosResponse } from 'axios'
 
 import StudentsTable from '@/components/StudentsTable.vue'
 import { getStudentsWithMetadata } from '@/helpers/metadataMappers'
-import { api } from '@/services'
 import { mockStudentsData } from '@/mocks/mockStudentsData'
 import { ensureGridApiHasBeenSet } from '@/utils/testing'
-import type { Student } from '@/services/students'
 import { type StudentWithMetadata, useStudentsStore } from '@/stores/students'
-
-const getStudentsSpy = vi
-  .spyOn(api.students, 'getStudents')
-  .mockResolvedValue({ status: 200, data: mockStudentsData } as AxiosResponse<Student[]>)
-
-const updateStudentsSpy = vi
-  .spyOn(api.students, 'updateStudents')
-  .mockResolvedValue([{ status: 200 }, { status: 200 }] as AxiosResponse[])
-
-window.alert = vi.fn()
+import { getStudentsSpy, updateStudentsSpy } from '@/mocks/mockStudentsEndpoints'
 
 describe('StudentsTable', () => {
   let wrapper: VueWrapper
   let gridApi: GridApi<StudentWithMetadata>
   let mockStudentsStore: ReturnType<typeof useStudentsStore>
+
+  window.alert = vi.fn()
 
   const renderStudentsTable = async () => {
     wrapper = mount(StudentsTable)
