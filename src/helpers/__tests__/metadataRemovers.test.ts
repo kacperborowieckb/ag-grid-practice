@@ -3,8 +3,8 @@ import { describe, expect, test } from 'vitest'
 import { mockStudentsData, mockStudentsDataWithMetadata } from '@/mocks/mockStudentsData'
 import { removeStudentsMetadata } from '@/helpers/metadataRemovers'
 
-describe('metadata mappers', () => {
-  describe('getStudentsWithMetadata', () => {
+describe('metadataRemovers', () => {
+  describe('removeStudentsMetadata', () => {
     test('should return students array without metadata', () => {
       expect(removeStudentsMetadata(mockStudentsDataWithMetadata)).toEqual(mockStudentsData)
     })

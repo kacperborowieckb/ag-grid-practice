@@ -3,7 +3,7 @@ import { describe, expect, test } from 'vitest'
 import { formatStudentsBirthDate, formatStudentsHobbies } from '@/helpers/valueFormatters'
 import { generateMockParamsData } from '@/utils/testing'
 
-describe('value formatters', () => {
+describe('valueFormatters', () => {
   describe('formatStudentsBirthday', () => {
     const testDate = { value: 1061232000000, result: '18/08/2003' }
     const isCelebratingTestDate = new Date(

@@ -3,7 +3,7 @@ import { beforeEach, describe, expect, test } from 'vitest'
 import { generateMockSetterParams } from '@/utils/testing'
 import { setValidatedValue } from '@/helpers/valueSetters'
 
-describe('value setters', () => {
+describe('valueSetters', () => {
   describe('setValidatedValue', () => {
     let mockParams: ReturnType<typeof generateMockSetterParams>
     const field = 'name'

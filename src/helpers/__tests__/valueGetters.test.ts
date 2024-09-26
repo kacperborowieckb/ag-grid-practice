@@ -3,7 +3,7 @@ import { describe, expect, test } from 'vitest'
 import { generateMockParamsData } from '@/utils/testing'
 import { getStudentsAge, getStudentsBirthDate, getStudentsHobbies } from '@/helpers/valueGetters'
 
-describe('value getters', () => {
+describe('valueGetters', () => {
   describe('getStudentsBirthDate', () => {
     test('should return correct date object based on provided time', () => {
       const time = 1061232000000
