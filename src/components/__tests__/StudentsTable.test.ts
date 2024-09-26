@@ -27,13 +27,6 @@ describe('StudentsTable', () => {
     gridApi = (wrapper.vm as any).studentsTableApi
   }
 
-  beforeEach(async () => {
-    setActivePinia(createPinia())
-    mockStudentsStore = useStudentsStore()
-
-    await renderStudentsTable()
-  })
-
   const getCellValue = (rowIndex: string, colKey: string, useFormatter?: boolean) => {
     const rowNode = gridApi.getRowNode(rowIndex)
 
@@ -41,6 +34,13 @@ describe('StudentsTable', () => {
 
     return gridApi.getCellValue({ rowNode, colKey, useFormatter })
   }
+
+  beforeEach(async () => {
+    setActivePinia(createPinia())
+    mockStudentsStore = useStudentsStore()
+
+    await renderStudentsTable()
+  })
 
   describe('rendering', () => {
     test('should render 2 rows', () => {
