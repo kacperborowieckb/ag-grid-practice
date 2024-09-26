@@ -14,7 +14,7 @@
 import { ref, computed } from 'vue'
 import type { ITextCellEditorParams } from 'ag-grid-community'
 
-type ValidatedTextCellEditorProps = {
+export type ValidatedTextCellEditorProps = {
   params: ITextCellEditorParams & { validator: (stringToTest: string) => boolean }
 }
 
