@@ -10,11 +10,7 @@
       @cellEditingStarted="onCellEditingStarted"
       @cellEditingStopped="onCellEditingStopped"
     />
-    <button 
-      class="students-table__button" 
-      :disabled="isSubmitDisabled" 
-      @click="updateStudents"
-    >
+    <button class="students-table__button" :disabled="isSubmitDisabled" @click="updateStudents">
       {{ submitButtonMessage }}
     </button>
   </div>
@@ -44,16 +40,16 @@ const submitButtonMessage = computed(() =>
 
 const { showError } = useGridError(studentsTableApi)
 
-const onGridReady = (params: GridReadyEvent) => {
-  studentsTableApi.value = params.api
-
-  studentsStore.fetchStudents({ onError: onFetchStudentsError })
-}
-
 const onFetchStudentsError = (fetchStudentsErrorMessage: string) => {
   if (!studentsTableApi.value) return
 
   showError(`Failed to fetch, please refresh the page. ${fetchStudentsErrorMessage}`)
+}
+
+const onGridReady = (params: GridReadyEvent) => {
+  studentsTableApi.value = params.api
+
+  studentsStore.fetchStudents({ onError: onFetchStudentsError })
 }
 
 const onCellEditingStarted = () => {
