@@ -67,7 +67,7 @@ onMounted(() => {
 }
 
 .validated-text-cell-editor--error {
-  background-color: hsla(0, 100%, 70%, 0.3);
-  color: hsla(0, 100%, 55%, 1);
+  background-color: $clr-error-bg;
+  color: $clr-error-primary;
 }
 </style>
