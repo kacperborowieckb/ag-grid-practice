@@ -2,28 +2,24 @@ import type { ValueGetterParams } from 'ag-grid-community'
 
 import type { StudentsTableRowData } from '@/helpers/columnDefinitions'
 
-type StudentsGetterParams<T> = ValueGetterParams<StudentsTableRowData, T>
+type StudentsGetterParams = ValueGetterParams<StudentsTableRowData>
 
-export const getStudentsHobbies = (params: StudentsGetterParams<string[]>) => {
-  const hobbies = params.data?.hobbies || []
+export const getStudentsBirthDate = (params: StudentsGetterParams) => {
+  const date = params.data?.birthDate.value
 
-  return hobbies.join(', ') || 'No hobbies.'
+  return date ? new Date(date) : ''
 }
 
-export const getStudentsBirthDate = (params: StudentsGetterParams<number>) => {
-  if (!params.data?.birthDate) return ''
+export const getStudentsAge = (params: StudentsGetterParams) => {
+  const birthDate = params.data?.birthDate.value
 
-  const birthday = new Date(params.data.birthDate)
-  const today = new Date()
+  if (!birthDate) return ''
 
-  const isCelebratingBirthday =
-    birthday.getMonth() === today.getMonth() && birthday.getDate() === today.getDate()
-
-  return `${birthday.toLocaleDateString()} ${isCelebratingBirthday ? '🎂' : ''}`.trim()
+  return (new Date().getFullYear() - new Date(birthDate).getFullYear()).toString()
 }
 
-export const getStudentsAge = (params: StudentsGetterParams<number>) => {
-  if (!params.data?.birthDate) return ''
+export const getStudentsHobbies = (params: StudentsGetterParams) => {
+  const hobbies = params.data?.hobbies.value || []
 
-  return (new Date().getFullYear() - new Date(params.data.birthDate).getFullYear()).toString()
+  return hobbies.join(', ') || ''
 }

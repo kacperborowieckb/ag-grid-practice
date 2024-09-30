@@ -2,25 +2,37 @@ import { defineStore } from 'pinia'
 
 import { api } from '@/services'
 import type { Student } from '@/services/students'
+import { getStudentsWithMetadata } from '@/helpers/metadataMappers'
+import { removeStudentsMetadata } from '@/helpers/metadataRemovers'
 
-type StudentsStoreState = {
-  students: Student[] | null
-  isLoading: boolean
-  error: string
+export type StudentWithMetadata = {
+  [T in keyof Student]: {
+    value: Student[T]
+    isValidated: boolean
+  }
 }
 
-type FetchStudentsActionProps = { onError?: (errorMessage: string) => void }
+type StudentsStoreState = {
+  students: StudentWithMetadata[] | null
+  isFetchLoading: boolean
+  isUpdateLoading: boolean
+}
+
+type DefaultStudentsActionProps = {
+  onError?: (errorMessage: string) => void
+  onSuccess?: () => void
+}
 
 export const useStudentsStore = defineStore('students', {
   state: (): StudentsStoreState => ({
     students: null,
-    isLoading: false,
-    error: ''
+    isFetchLoading: false,
+    isUpdateLoading: false
   }),
   actions: {
-    async fetchStudents({ onError }: FetchStudentsActionProps) {
+    async fetchStudents({ onError }: DefaultStudentsActionProps = {}) {
       try {
-        this.isLoading = true
+        this.isFetchLoading = true
 
         const data = await api.students.getStudents()
 
@@ -28,15 +40,34 @@ export const useStudentsStore = defineStore('students', {
           throw new Error('Fetching students failed')
         }
 
-        this.students = data.data
+        this.students = getStudentsWithMetadata(data.data)
       } catch (error) {
         if (error instanceof Error) {
-          this.error = error.message
-
-          if (onError) onError(this.error)
+          onError && onError(error.message)
         }
       } finally {
-        this.isLoading = false
+        this.isFetchLoading = false
+      }
+    },
+    async updateStudents({ onError, onSuccess }: DefaultStudentsActionProps = {}) {
+      if (!this.students) return
+
+      try {
+        this.isUpdateLoading = true
+
+        const data = await api.students.updateStudents(removeStudentsMetadata(this.students))
+
+        if (data.some(({ status }) => status !== 200)) {
+          throw new Error('Fetching students failed')
+        }
+
+        onSuccess && onSuccess()
+      } catch (error) {
+        if (error instanceof Error) {
+          onError && onError(error.message)
+        }
+      } finally {
+        this.isUpdateLoading = false
       }
     }
   }
