@@ -5,13 +5,11 @@ export const getStudentsWithMetadata = (students: Student[]): StudentWithMetadat
   return students.map((student) => {
     const studentWithMetadata = {} as StudentWithMetadata
 
-    Object.keys(student).forEach((key) => {
-      studentWithMetadata[key as keyof Student] = {
-        // didn't find a way to properly type this, please let me know how I should handle this 🙏
-        // @ts-ignore
-        value: student[key],
+    Object.keys(student).forEach(<T extends keyof Student>(key: string) => {
+      studentWithMetadata[key as T] = {
+        value: student[key as T],
         isValidated: true
-      }
+      } as StudentWithMetadata[T]
     })
 
     return studentWithMetadata

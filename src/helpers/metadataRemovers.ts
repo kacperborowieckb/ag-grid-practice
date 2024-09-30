@@ -5,11 +5,11 @@ export const removeStudentsMetadata = (students: StudentWithMetadata[]): Student
   return students.map((student) => {
     const studentObj = {} as Student
 
-    // didn't find a way to properly type this, please let me know how I should handle this 🙏
-    Object.entries(student).forEach(([key, value]) => {
-      //   @ts-ignore
-      studentObj[key] = value.value
-    })
+    Object.entries(student).forEach(
+      <T extends keyof StudentWithMetadata>([key, value]: [string, StudentWithMetadata[T]]) => {
+        studentObj[key as T] = value.value
+      }
+    )
 
     return studentObj
   })
