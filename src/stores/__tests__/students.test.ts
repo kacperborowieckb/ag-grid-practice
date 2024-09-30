@@ -22,15 +22,15 @@ describe('studentsStore', () => {
     test('should have loading state for fetching students set to true', async () => {
       mockStudentsStore.fetchStudents()
 
-      expect(mockStudentsStore.isLoading.fetchStudents).toBe(true)
-      expect(mockStudentsStore.isLoading.updateStudents).toBe(false)
+      expect(mockStudentsStore.isFetchLoading).toBe(true)
+      expect(mockStudentsStore.isUpdateLoading).toBe(false)
     })
 
     test('should have loading state for fetching students set to false after fetching', async () => {
       await mockStudentsStore.fetchStudents()
 
-      expect(mockStudentsStore.isLoading.fetchStudents).toBe(false)
-      expect(mockStudentsStore.isLoading.updateStudents).toBe(false)
+      expect(mockStudentsStore.isFetchLoading).toBe(false)
+      expect(mockStudentsStore.isUpdateLoading).toBe(false)
     })
 
     test('should call getStudents method', async () => {
@@ -82,15 +82,15 @@ describe('studentsStore', () => {
     test('should have loading state for updating set to true', async () => {
       mockStudentsStore.updateStudents()
 
-      expect(mockStudentsStore.isLoading.updateStudents).toBe(true)
-      expect(mockStudentsStore.isLoading.fetchStudents).toBe(false)
+      expect(mockStudentsStore.isUpdateLoading).toBe(true)
+      expect(mockStudentsStore.isFetchLoading).toBe(false)
     })
 
     test('should have loading state for updating students set to false after updating', async () => {
       await mockStudentsStore.updateStudents()
 
-      expect(mockStudentsStore.isLoading.updateStudents).toBe(false)
-      expect(mockStudentsStore.isLoading.fetchStudents).toBe(false)
+      expect(mockStudentsStore.isUpdateLoading).toBe(false)
+      expect(mockStudentsStore.isFetchLoading).toBe(false)
     })
 
     test('should call updateStudents with students without metadata', async () => {

@@ -2,7 +2,7 @@
   <div class="students-table">
     <AgGridVue
       class="students-table__grid ag-theme-quartz-dark"
-      :loading="studentsStore.isLoading.fetchStudents"
+      :loading="studentsStore.isFetchLoading"
       :rowData="studentsStore.students"
       :columnDefs="studentsColDefs"
       :defaultColDef="defaultStudentsColDef"
@@ -33,10 +33,8 @@ const canSubmit = ref(false)
 const someValueChanged = ref(false)
 const studentsTableApi = shallowRef<GridApi<StudentWithMetadata> | null>(null)
 
-const isSubmitDisabled = computed(() => !canSubmit.value || studentsStore.isLoading.updateStudents)
-const submitButtonMessage = computed(() =>
-  studentsStore.isLoading.updateStudents ? 'Loading..' : 'Submit'
-)
+const isSubmitDisabled = computed(() => !canSubmit.value || studentsStore.isUpdateLoading)
+const submitButtonMessage = computed(() => (studentsStore.isUpdateLoading ? 'Loading..' : 'Submit'))
 
 const { showError } = useGridError(studentsTableApi)
 

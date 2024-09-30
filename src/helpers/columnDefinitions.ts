@@ -10,11 +10,7 @@ import ValidatedTextCellEditor from '@/components/ValidatedTextCellEditor.vue'
 
 import { setValidatedValue } from './valueSetters'
 import { formatStudentsBirthDate, formatStudentsHobbies } from './valueFormatters'
-import { 
-  getStudentsAge, 
-  getStudentsBirthDate, 
-  getStudentsHobbies
-} from './valueGetters'
+import { getStudentsAge, getStudentsBirthDate, getStudentsHobbies } from './valueGetters'
 
 export type StudentsTableRowData = StudentWithMetadata & {
   age: number
@@ -76,7 +72,11 @@ export const studentsColDefs: ColDef<StudentsTableRowData>[] = [
     valueSetter: setValidatedValue((newValue) => {
       if (!newValue.trim()) return []
 
-      return newValue.split(', ').map((hobby) => hobby.trim().replace(/\s+/g, ' '))
+      return newValue
+        .replace(/,+/g, ',')
+        .split(',')
+        .map((hobby) => hobby.trim().replace(/\s+/g, ' '))
+        .filter(Boolean)
     }),
     valueFormatter: formatStudentsHobbies
   }

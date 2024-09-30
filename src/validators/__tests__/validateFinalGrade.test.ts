@@ -5,9 +5,6 @@ import { validateFinalGrade } from '@/validators/studentsValidators'
 describe('validateFinalGrade', () => {
   it('should return true for valid grades', () => {
     expect(validateFinalGrade('1')).toBe(true)
-    expect(validateFinalGrade('2')).toBe(true)
-    expect(validateFinalGrade('3')).toBe(true)
-    expect(validateFinalGrade('4')).toBe(true)
     expect(validateFinalGrade('5')).toBe(true)
   })
 

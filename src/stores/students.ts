@@ -14,7 +14,8 @@ export type StudentWithMetadata = {
 
 type StudentsStoreState = {
   students: StudentWithMetadata[] | null
-  isLoading: Record<'fetchStudents' | 'updateStudents', boolean>
+  isFetchLoading: boolean
+  isUpdateLoading: boolean
 }
 
 type DefaultStudentsActionProps = {
@@ -25,15 +26,13 @@ type DefaultStudentsActionProps = {
 export const useStudentsStore = defineStore('students', {
   state: (): StudentsStoreState => ({
     students: null,
-    isLoading: {
-      fetchStudents: false,
-      updateStudents: false
-    }
+    isFetchLoading: false,
+    isUpdateLoading: false
   }),
   actions: {
     async fetchStudents({ onError }: DefaultStudentsActionProps = {}) {
       try {
-        this.isLoading.fetchStudents = true
+        this.isFetchLoading = true
 
         const data = await api.students.getStudents()
 
@@ -47,14 +46,14 @@ export const useStudentsStore = defineStore('students', {
           onError && onError(error.message)
         }
       } finally {
-        this.isLoading.fetchStudents = false
+        this.isFetchLoading = false
       }
     },
     async updateStudents({ onError, onSuccess }: DefaultStudentsActionProps = {}) {
       if (!this.students) return
 
       try {
-        this.isLoading.updateStudents = true
+        this.isUpdateLoading = true
 
         const data = await api.students.updateStudents(removeStudentsMetadata(this.students))
 
@@ -68,7 +67,7 @@ export const useStudentsStore = defineStore('students', {
           onError && onError(error.message)
         }
       } finally {
-        this.isLoading.updateStudents = false
+        this.isUpdateLoading = false
       }
     }
   }
