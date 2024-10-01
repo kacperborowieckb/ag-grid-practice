@@ -7,7 +7,7 @@ import { removeStudentsMetadata } from '@/helpers/metadataRemovers'
 
 export type StudentWithMetadata = {
   [T in keyof Student]: {
-    value: Student[T]
+    value?: Student[T]
     isValidated: boolean
   }
 }

@@ -43,15 +43,21 @@ describe('valueSetters', () => {
     })
 
     test('should use custom setter when provided', () => {
-      expect(setValidatedValue((name) => name.toUpperCase())(mockParams as any)).toBe(true)
+      expect(
+        setValidatedValue({ customSetter: (name) => name.toUpperCase() })(mockParams as any)
+      ).toBe(true)
       expect(mockParams.data[field].value).toBe('JOHNNY')
     })
 
     test('should use custom setter when provided and is not validated', () => {
       mockParams.data[field].isValidated = false
 
-      expect(setValidatedValue((name) => name.toUpperCase())(mockParams as any)).toBe(false)
+      expect(
+        setValidatedValue({ customSetter: (name) => name.toUpperCase() })(mockParams as any)
+      ).toBe(false)
       expect(mockParams.data[field].value).toBe('JOHN')
     })
+
+    // TODO: write tests for checkValidation property and setting value when oldValue is undefined
   })
 })

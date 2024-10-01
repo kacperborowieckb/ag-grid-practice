@@ -1,5 +1,8 @@
 <template>
   <div class="students-table">
+    <div>
+      <button @click="addRow">addRow</button>
+    </div>
     <AgGridVue
       class="students-table__grid ag-theme-quartz-dark"
       :loading="studentsStore.isFetchLoading"
@@ -31,12 +34,36 @@ const studentsStore = useStudentsStore()
 
 const canSubmit = ref(false)
 const someValueChanged = ref(false)
+const addedRows = ref<StudentWithMetadata[]>([])
 const studentsTableApi = shallowRef<GridApi<StudentWithMetadata> | null>(null)
 
-const isSubmitDisabled = computed(() => !canSubmit.value || studentsStore.isUpdateLoading)
+const isSubmitDisabled = computed(
+  () =>
+    !canSubmit.value ||
+    studentsStore.isUpdateLoading ||
+    !addedRows.value.every((student) =>
+      Object.values(student).every(({ isValidated }) => isValidated)
+    )
+)
 const submitButtonMessage = computed(() => (studentsStore.isUpdateLoading ? 'Loading..' : 'Submit'))
 
 const { showError } = useGridError(studentsTableApi)
+
+const addRow = () => {
+  const emptyStudent = {
+    id: { isValidated: true },
+    name: { isValidated: false },
+    lastName: { isValidated: false },
+    birthDate: { isValidated: false },
+    finalGrade: { isValidated: false },
+    hobbies: { isValidated: false }
+  }
+
+  studentsTableApi.value?.applyTransaction({
+    add: [emptyStudent]
+  })
+  addedRows.value.push(emptyStudent)
+}
 
 const onFetchStudentsError = (fetchStudentsErrorMessage: string) => {
   if (!studentsTableApi.value) return

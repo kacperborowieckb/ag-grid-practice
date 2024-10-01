@@ -18,7 +18,18 @@ export type StudentsTableRowData = StudentWithMetadata & {
 
 export const defaultStudentsColDef: ColDef = {
   flex: 1,
-  editable: true
+  editable: true,
+  cellStyle: (params) => {
+    const field = params.colDef?.field
+
+    if (!field) return { outline: 'none' }
+
+    if (!params.data[field]?.isValidated) {
+      return { outline: '1px solid red' }
+    }
+
+    return { outline: 'none' }
+  }
 }
 
 export const studentsColDefs: ColDef<StudentsTableRowData>[] = [
@@ -46,7 +57,7 @@ export const studentsColDefs: ColDef<StudentsTableRowData>[] = [
       max: new Date()
     },
     valueGetter: getStudentsBirthDate,
-    valueSetter: setValidatedValue(),
+    valueSetter: setValidatedValue({ checkValidation: false }),
     valueFormatter: formatStudentsBirthDate
   },
   {
@@ -69,14 +80,16 @@ export const studentsColDefs: ColDef<StudentsTableRowData>[] = [
     cellEditor: ValidatedTextCellEditor,
     cellEditorParams: { validator: validateHobbies },
     valueGetter: getStudentsHobbies,
-    valueSetter: setValidatedValue((newValue) => {
-      if (!newValue.trim()) return []
+    valueSetter: setValidatedValue({
+      customSetter: (newValue) => {
+        if (!newValue.trim()) return []
 
-      return newValue
-        .replace(/,+/g, ',')
-        .split(',')
-        .map((hobby) => hobby.trim().replace(/\s+/g, ' '))
-        .filter(Boolean)
+        return newValue
+          .replace(/,+/g, ',')
+          .split(',')
+          .map((hobby) => hobby.trim().replace(/\s+/g, ' '))
+          .filter(Boolean)
+      }
     }),
     valueFormatter: formatStudentsHobbies
   }
