@@ -4,10 +4,10 @@
       <button class="students-table__action-button" @click="addRow">Add Row</button>
       <button
         class="students-table__action-button"
-        :disabled="!selectedRows.length"
+        :disabled="isDeleteRowsButtonDisabled"
         @click="deleteRows"
       >
-        Delete {{ selectedRows.length }} Rows
+        {{ deleteRowsButtonMessage }}
       </button>
     </div>
     <AgGridVue
@@ -64,6 +64,14 @@ const isSubmitDisabled = computed(
 )
 const submitButtonMessage = computed(() => (studentsStore.isUpdateLoading ? 'Loading..' : 'Submit'))
 
+const isDeleteRowsButtonDisabled = computed(
+  () => !selectedRows.value.length || studentsStore.isDeletingStudents
+)
+
+const deleteRowsButtonMessage = computed(() =>
+  studentsStore.isDeletingStudents ? 'Loading..' : `Delete ${selectedRows.value.length} rows`
+)
+
 const { showError } = useGridError(studentsTableApi)
 
 const onFetchStudentsError = (fetchStudentsErrorMessage: string) => {
@@ -94,10 +102,12 @@ const onSelectionChanged = () => {
 
 const updateStudents = () => {
   studentsStore.updateStudents({
+    newStudents: addedRows.value,
     onError: (errorMessage: string) => alert(errorMessage),
     onSuccess: () => {
       canSubmit.value = false
       someValueChanged.value = false
+      addedRows.value = []
     }
   })
 }
@@ -111,18 +121,29 @@ const addRow = () => {
     lastName: { isValidated: false },
     birthDate: { isValidated: false },
     finalGrade: { isValidated: false },
-    hobbies: { isValidated: true }
+    hobbies: { value: [], isValidated: true }
   }
 
   studentsTableApi.value?.applyTransaction({
     add: [emptyStudent]
   })
+
   addedRows.value.push(emptyStudent)
+  studentsStore.students?.push(emptyStudent)
 }
 
 const deleteRows = () => {
-  studentsTableApi.value?.applyTransaction({ remove: selectedRows.value })
-  selectedRows.value = []
+  const studentsToDelete = selectedRows.value.filter(
+    (studentToDelete) =>
+      !addedRows.value.find((addedStudent) => addedStudent.id === studentToDelete.id)
+  )
+
+  studentsStore.deleteStudents({
+    studentsToDelete,
+    removedStudents: selectedRows.value,
+    onSuccess: () => (selectedRows.value = []),
+    onError: (errorMessage: string) => alert(errorMessage)
+  })
 }
 </script>
 

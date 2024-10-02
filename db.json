@@ -6,7 +6,9 @@
       "lastName": "Doe",
       "birthDate": 1061232000000,
       "finalGrade": 4,
-      "hobbies": ["Reading"]
+      "hobbies": [
+        "Reading"
+      ]
     },
     {
       "id": "3450beff-b4e9-4b49-bcbc-3e1cce3b693b",
@@ -22,7 +24,11 @@
       "lastName": "Johnson",
       "birthDate": 1066233600000,
       "finalGrade": 3,
-      "hobbies": ["Music", "Running", "Cycling"]
+      "hobbies": [
+        "Music",
+        "Running",
+        "Cycling"
+      ]
     },
     {
       "id": "6fffc0d9-8451-4907-bb5e-91f0ec525f5d",
@@ -30,7 +36,10 @@
       "lastName": "Williams",
       "birthDate": 1032213600000,
       "finalGrade": 4,
-      "hobbies": ["Cooking", "Gaming"]
+      "hobbies": [
+        "Cooking",
+        "Gaming"
+      ]
     },
     {
       "id": "114a64f7-70f7-45b0-bb40-937be7b5de59",
@@ -46,15 +55,9 @@
       "lastName": "Garcia",
       "birthDate": 1090992000000,
       "finalGrade": 1,
-      "hobbies": ["Dancing"]
-    },
-    {
-      "id": "bc7f4f7f-7a66-4fa8-b58c-7b6d51b6e1e4",
-      "name": "James",
-      "lastName": "Martinez",
-      "birthDate": 1072723200000,
-      "finalGrade": 3,
-      "hobbies": ["Coding", "Chess"]
+      "hobbies": [
+        "Dancing"
+      ]
     }
   ]
 }

@@ -24,4 +24,18 @@ async function updateStudents(studentsData: Student[]) {
   return Promise.all(promises)
 }
 
-export default { getStudents, updateStudents }
+async function addStudents(newStudents: Student[]) {
+  // Solution only for working with json-server as it currently do not adding more than one record in post
+  const promises = newStudents.map((newStudent) => http.post(endpoints.students, newStudent))
+
+  return await Promise.all(promises)
+}
+
+async function deleteStudents(studentsData: Student[]) {
+  // Solution for json-server because it do not support deleting multiple records
+  const promises = studentsData.map((student) => http.delete(`${endpoints.students}/${student.id}`))
+
+  return Promise.all(promises)
+}
+
+export default { getStudents, updateStudents, addStudents, deleteStudents }
