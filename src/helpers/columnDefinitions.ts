@@ -38,7 +38,8 @@ export const studentsColDefs: ColDef<StudentsTableRowData>[] = [
     checkboxSelection: true,
     headerCheckboxSelection: true,
     pinned: 'left',
-    width: 50
+    width: 50,
+    editable: false
   },
   {
     headerName: 'Name',

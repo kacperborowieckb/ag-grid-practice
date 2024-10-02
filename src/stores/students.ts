@@ -29,8 +29,8 @@ type UpdateStudentsActionProps = {
 } & DefaultStudentsActionProps
 
 type DeleteStudentsActionProps = {
-  studentsToDelete?: StudentWithMetadata[]
-  removedStudents?: StudentWithMetadata[]
+  persistedStudentsToDelete?: StudentWithMetadata[]
+  allStudentsToRemove?: StudentWithMetadata[]
 } & DefaultStudentsActionProps
 
 export const useStudentsStore = defineStore('students', {
@@ -67,15 +67,30 @@ export const useStudentsStore = defineStore('students', {
         this.isUpdateLoading = true
 
         // need to create a separate one because do not support replacement of whole endpoints data
-        const newStudentsData = await api.students.addStudents(removeStudentsMetadata(newStudents))
+        const addStudentsResponseData = await api.students.addStudents(
+          removeStudentsMetadata(newStudents)
+        )
 
-        const data = await api.students.updateStudents(removeStudentsMetadata(this.students))
+        const addStudentsError = addStudentsResponseData.some(
+          ({ status }) => status !== 200 && status !== 201
+        )
 
-        if (![...newStudentsData, ...data].some(({ status }) => status === 200 || status === 201)) {
+        if (addStudentsError) {
+          throw new Error('Adding students failed')
+        }
+
+        const updateStudentsResponseData = await api.students.updateStudents(
+          removeStudentsMetadata(this.students)
+        )
+
+        const updateStudentsError = updateStudentsResponseData.some(
+          ({ status }) => status !== 200 && status !== 201
+        )
+
+        if (updateStudentsError) {
           throw new Error('Updating students failed')
         }
 
-        this.students.push(...newStudents)
         onSuccess && onSuccess()
       } catch (error) {
         if (error instanceof Error) {
@@ -86,15 +101,17 @@ export const useStudentsStore = defineStore('students', {
       }
     },
     async deleteStudents({
-      studentsToDelete = [],
-      removedStudents = [],
+      persistedStudentsToDelete = [],
+      allStudentsToRemove = [],
       onError,
       onSuccess
     }: DeleteStudentsActionProps = {}) {
       try {
         this.isDeletingStudents = true
 
-        const data = await api.students.deleteStudents(removeStudentsMetadata(studentsToDelete))
+        const data = await api.students.deleteStudents(
+          removeStudentsMetadata(persistedStudentsToDelete)
+        )
 
         if (data.some(({ status }) => status !== 200)) {
           throw new Error('Deleting students failed')
@@ -102,7 +119,7 @@ export const useStudentsStore = defineStore('students', {
 
         const filteredStudents = this.students?.filter(
           (student) =>
-            !removedStudents.find(
+            !allStudentsToRemove.find(
               (studentToDelete) => studentToDelete.id.value === student.id.value
             )
         )
@@ -117,7 +134,6 @@ export const useStudentsStore = defineStore('students', {
       } finally {
         this.isDeletingStudents = false
       }
-      console.log(this.students)
     }
   }
 })

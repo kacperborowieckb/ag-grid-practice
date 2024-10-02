@@ -1,11 +1,16 @@
 <template>
   <div class="students-table">
     <div class="students-table__actions">
-      <button class="students-table__action-button" @click="addRow">Add Row</button>
+      <button 
+        class="students-table__action-button" 
+        @click="addRow"
+      >
+        Add Row
+      </button>
       <button
         class="students-table__action-button"
         :disabled="isDeleteRowsButtonDisabled"
-        @click="deleteRows"
+        @click="deleteSelectedRows"
       >
         {{ deleteRowsButtonMessage }}
       </button>
@@ -24,7 +29,11 @@
       @cellEditingStopped="onCellEditingStopped"
       @selectionChanged="onSelectionChanged"
     />
-    <button class="students-table__submit" :disabled="isSubmitDisabled" @click="updateStudents">
+    <button 
+      class="students-table__submit" 
+      :disabled="isSubmitDisabled" 
+      @click="updateStudents"
+    >
       {{ submitButtonMessage }}
     </button>
   </div>
@@ -54,14 +63,12 @@ const addedRows = ref<StudentWithMetadata[]>([])
 const selectedRows = ref<StudentWithMetadata[]>([])
 const studentsTableApi = shallowRef<GridApi<StudentWithMetadata> | null>(null)
 
-const isSubmitDisabled = computed(
-  () =>
-    !canSubmit.value ||
-    studentsStore.isUpdateLoading ||
-    !addedRows.value.every((student) =>
-      Object.values(student).every(({ isValidated }) => isValidated)
-    )
-)
+const isSubmitDisabled = computed(() => {
+  return (
+    !canSubmit.value || studentsStore.isUpdateLoading || !ensureEveryRowDataIsValid(addedRows.value)
+  )
+})
+
 const submitButtonMessage = computed(() => (studentsStore.isUpdateLoading ? 'Loading..' : 'Submit'))
 
 const isDeleteRowsButtonDisabled = computed(
@@ -100,6 +107,11 @@ const onSelectionChanged = () => {
   selectedRows.value = studentsTableApi.value?.getSelectedRows() ?? []
 }
 
+const getRowId = (params: GetRowIdParams) => params.data.id.value
+
+const ensureEveryRowDataIsValid = (rows: StudentWithMetadata[]) =>
+  rows.every((student) => Object.values(student).every(({ isValidated }) => isValidated))
+
 const updateStudents = () => {
   studentsStore.updateStudents({
     newStudents: addedRows.value,
@@ -111,8 +123,6 @@ const updateStudents = () => {
     }
   })
 }
-
-const getRowId = (params: GetRowIdParams) => params.data.id.value
 
 const addRow = () => {
   const emptyStudent = {
@@ -132,15 +142,16 @@ const addRow = () => {
   studentsStore.students?.push(emptyStudent)
 }
 
-const deleteRows = () => {
-  const studentsToDelete = selectedRows.value.filter(
+const getPersistedStudents = () =>
+  selectedRows.value.filter(
     (studentToDelete) =>
       !addedRows.value.find((addedStudent) => addedStudent.id === studentToDelete.id)
   )
 
+const deleteSelectedRows = () => {
   studentsStore.deleteStudents({
-    studentsToDelete,
-    removedStudents: selectedRows.value,
+    persistedStudentsToDelete: getPersistedStudents(),
+    allStudentsToRemove: selectedRows.value,
     onSuccess: () => (selectedRows.value = []),
     onError: (errorMessage: string) => alert(errorMessage)
   })
