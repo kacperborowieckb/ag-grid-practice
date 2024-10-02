@@ -34,6 +34,13 @@ export const defaultStudentsColDef: ColDef = {
 
 export const studentsColDefs: ColDef<StudentsTableRowData>[] = [
   {
+    headerName: '',
+    checkboxSelection: true,
+    headerCheckboxSelection: true,
+    pinned: 'left',
+    width: 50
+  },
+  {
     headerName: 'Name',
     field: 'name',
     cellEditor: ValidatedTextCellEditor,
