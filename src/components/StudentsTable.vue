@@ -65,7 +65,7 @@ const studentsTableApi = shallowRef<GridApi<StudentWithMetadata> | null>(null)
 
 const isSubmitDisabled = computed(() => {
   return (
-    !canSubmit.value || studentsStore.isUpdateLoading || !ensureEveryRowDataIsValid(addedRows.value)
+    !canSubmit.value || studentsStore.isUpdateLoading || !ensureRowsDataIsValid(addedRows.value)
   )
 })
 
@@ -109,7 +109,7 @@ const onSelectionChanged = () => {
 
 const getRowId = (params: GetRowIdParams) => params.data.id.value
 
-const ensureEveryRowDataIsValid = (rows: StudentWithMetadata[]) =>
+const ensureRowsDataIsValid = (rows: StudentWithMetadata[]) =>
   rows.every((student) => Object.values(student).every(({ isValidated }) => isValidated))
 
 const updateStudents = () => {
@@ -144,8 +144,8 @@ const addRow = () => {
 
 const getPersistedStudents = () =>
   selectedRows.value.filter(
-    (studentToDelete) =>
-      !addedRows.value.find((addedStudent) => addedStudent.id === studentToDelete.id)
+    (selectedStudents) =>
+      !addedRows.value.find((addedStudent) => addedStudent.id === selectedStudents.id)
   )
 
 const deleteSelectedRows = () => {

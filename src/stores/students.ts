@@ -120,7 +120,7 @@ export const useStudentsStore = defineStore('students', {
         const filteredStudents = this.students?.filter(
           (student) =>
             !allStudentsToRemove.find(
-              (studentToDelete) => studentToDelete.id.value === student.id.value
+              (studentToRemove) => studentToRemove.id.value === student.id.value
             )
         )
 
