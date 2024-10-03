@@ -6,7 +6,9 @@
       "lastName": "Doe",
       "birthDate": 1061232000000,
       "finalGrade": 4,
-      "hobbies": ["Reading"]
+      "hobbies": [
+        "Reading"
+      ]
     },
     {
       "id": "3450beff-b4e9-4b49-bcbc-3e1cce3b693b",
@@ -22,7 +24,10 @@
       "lastName": "White",
       "birthDate": 1056403200000,
       "finalGrade": 2,
-      "hobbies": ["Gardening", "Cooking"]
+      "hobbies": [
+        "Gardening",
+        "Cooking"
+      ]
     },
     {
       "id": "fe728bfb-8233-4ebf-a155-6e675e97be49",
@@ -30,7 +35,11 @@
       "lastName": "Moore",
       "birthDate": 1073318400000,
       "finalGrade": 4,
-      "hobbies": ["Running", "Cycling", "Swimming"]
+      "hobbies": [
+        "Running",
+        "Cycling",
+        "Swimming"
+      ]
     },
     {
       "id": "27863e55-4325-4971-81b9-34d24dd9a274",
@@ -46,7 +55,9 @@
       "lastName": "Davis",
       "birthDate": 1049587200000,
       "finalGrade": 5,
-      "hobbies": ["Football"]
+      "hobbies": [
+        "Football"
+      ]
     },
     {
       "id": "a47330b1-711f-43ec-a380-846aa08493b5",
@@ -54,7 +65,10 @@
       "lastName": "Miller",
       "birthDate": 1068268800000,
       "finalGrade": 3,
-      "hobbies": ["Running", "Painting"]
+      "hobbies": [
+        "Running",
+        "Painting"
+      ]
     },
     {
       "id": "5b68c894-ea56-45f8-b08d-68e2d85f76df",
@@ -63,14 +77,6 @@
       "birthDate": 1056950400000,
       "finalGrade": 2,
       "hobbies": []
-    },
-    {
-      "id": "9ba8278d-60f5-4890-a55b-0cba63d6e3bc",
-      "name": "Grace",
-      "lastName": "Martin",
-      "birthDate": 1086432000000,
-      "finalGrade": 4,
-      "hobbies": ["Baking", "Traveling", "Photography", "Dancing"]
     }
   ]
 }

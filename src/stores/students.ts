@@ -91,6 +91,7 @@ export const useStudentsStore = defineStore('students', {
           throw new Error('Updating students failed')
         }
 
+        this.students.push(...newStudents)
         onSuccess && onSuccess()
       } catch (error) {
         if (error instanceof Error) {
@@ -102,7 +103,6 @@ export const useStudentsStore = defineStore('students', {
     },
     async deleteStudents({
       persistedStudentsToDelete = [],
-      allStudentsToRemove = [],
       onError,
       onSuccess
     }: DeleteStudentsActionProps = {}) {
@@ -119,8 +119,8 @@ export const useStudentsStore = defineStore('students', {
 
         const filteredStudents = this.students?.filter(
           (student) =>
-            !allStudentsToRemove.find(
-              (studentToRemove) => studentToRemove.id.value === student.id.value
+            !persistedStudentsToDelete.find(
+              (studentToDelete) => studentToDelete.id.value === student.id.value
             )
         )
 

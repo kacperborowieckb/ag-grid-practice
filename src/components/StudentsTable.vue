@@ -1,12 +1,7 @@
 <template>
   <div class="students-table">
     <div class="students-table__actions">
-      <button 
-        class="students-table__action-button" 
-        @click="addRow"
-      >
-        Add Row
-      </button>
+      <button class="students-table__action-button" @click="addRow">Add Row</button>
       <button
         class="students-table__action-button"
         :disabled="isDeleteRowsButtonDisabled"
@@ -29,11 +24,7 @@
       @cellEditingStopped="onCellEditingStopped"
       @selectionChanged="onSelectionChanged"
     />
-    <button 
-      class="students-table__submit" 
-      :disabled="isSubmitDisabled" 
-      @click="updateStudents"
-    >
+    <button class="students-table__submit" :disabled="isSubmitDisabled" @click="updateStudents">
       {{ submitButtonMessage }}
     </button>
   </div>
@@ -139,20 +130,31 @@ const addRow = () => {
   })
 
   addedRows.value.push(emptyStudent)
-  studentsStore.students?.push(emptyStudent)
 }
 
-const getPersistedStudents = () =>
-  selectedRows.value.filter(
-    (selectedStudents) =>
-      !addedRows.value.find((addedStudent) => addedStudent.id === selectedStudents.id)
-  )
+const getSelectedStudents = (persisted: boolean) => {
+  return selectedRows.value.filter((selectedStudents) => {
+    const result = addedRows.value.find((addedStudent) => addedStudent.id === selectedStudents.id)
+
+    return persisted ? !result : result
+  })
+}
 
 const deleteSelectedRows = () => {
   studentsStore.deleteStudents({
-    persistedStudentsToDelete: getPersistedStudents(),
-    allStudentsToRemove: selectedRows.value,
-    onSuccess: () => (selectedRows.value = []),
+    persistedStudentsToDelete: getSelectedStudents(true),
+    onSuccess: () => {
+      studentsTableApi.value?.applyTransaction({ remove: getSelectedStudents(false) })
+
+      addedRows.value = addedRows.value.filter(
+        (addedStudent) =>
+          !selectedRows.value.find(
+            (selectedStudent) => selectedStudent.id.value === addedStudent.id.value
+          )
+      )
+
+      selectedRows.value = []
+    },
     onError: (errorMessage: string) => alert(errorMessage)
   })
 }
