@@ -9,7 +9,7 @@ export const ensureGridApiHasBeenSet = (vm: any) =>
         return resolve()
       }
 
-      setTimeout(waitForGridReady, 20)
+      setTimeout(waitForGridReady, 30)
     })()
   })
 
