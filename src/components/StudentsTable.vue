@@ -1,8 +1,11 @@
 <template>
   <div class="students-table">
     <div class="students-table__actions">
-      <button class="students-table__action-button" @click="addRow">Add Row</button>
+      <button data-test="add-row-button" class="students-table__action-button" @click="addRow">
+        Add Row
+      </button>
       <button
+        data-test="delete-rows-button"
         class="students-table__action-button"
         :disabled="isDeleteRowsButtonDisabled"
         @click="deleteSelectedRows"

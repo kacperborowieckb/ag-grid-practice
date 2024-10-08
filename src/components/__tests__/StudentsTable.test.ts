@@ -5,14 +5,15 @@
 import { beforeEach, describe, expect, test, vi } from 'vitest'
 import { createPinia, setActivePinia } from 'pinia'
 import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
-import type { GridApi } from 'ag-grid-community'
+import type { GridApi, IRowNode } from 'ag-grid-community'
 
 import StudentsTable from '@/components/StudentsTable.vue'
 import { getStudentsWithMetadata } from '@/helpers/metadataMappers'
-import { mockStudentsData } from '@/mocks/mockStudentsData'
-import { ensureGridApiHasBeenSet } from '@/utils/testing'
+import { mockStudentsData, mockStudentsDataWithMetadata } from '@/mocks/mockStudentsData'
+import { ensureGridApiHasBeenSet, fillOutStudentRow, getLastRowData } from '@/utils/testing'
 import { type StudentWithMetadata, useStudentsStore } from '@/stores/students'
 import { getStudentsSpy, updateStudentsSpy } from '@/mocks/mockStudentsEndpoints'
+import { removeStudentsMetadata } from '@/helpers/metadataRemovers'
 
 describe('StudentsTable', () => {
   let wrapper: VueWrapper
@@ -316,6 +317,64 @@ describe('StudentsTable', () => {
 
       expect(window.alert).toBeCalledTimes(1)
       expect(window.alert).toBeCalledWith(errorMessage)
+    })
+  })
+
+  describe.only('adding new rows', () => {
+    test('should add new row without any data on button click', async () => {
+      const addRowButton = wrapper.find('[data-test="add-row-button"]')
+
+      await addRowButton.trigger('click')
+
+      const { id, ...newStudent } = getLastRowData<StudentWithMetadata>(gridApi)
+
+      const hasAnyData = Object.values(newStudent).every((colData) => !!colData.value)
+
+      expect((wrapper.vm as any).addedRows).toHaveLength(1)
+      expect(hasAnyData).toBe(false)
+    })
+
+    test('submit button should be disabled after adding new row', async () => {
+      const addRowButton = wrapper.find('[data-test="add-row-button"]')
+
+      await addRowButton.trigger('click')
+
+      const submitButton = wrapper.find('.students-table__submit')
+
+      expect(submitButton.attributes('disabled')).toBeDefined()
+    })
+
+    test('submit button should be disabled after adding new row, when some value has been changed before and after', async () => {
+      const addRowButton = wrapper.find('[data-test="add-row-button"]')
+
+      gridApi.startEditingCell({ rowIndex: 0, colKey: 'name' })
+      await wrapper.find('input[type="text"]').setValue('Anthony')
+      gridApi.stopEditing()
+
+      await addRowButton.trigger('click')
+
+      gridApi.startEditingCell({ rowIndex: 0, colKey: 'lastName' })
+      await wrapper.find('input[type="text"]').setValue('Smith')
+      gridApi.stopEditing()
+
+      await flushPromises()
+
+      const submitButton = wrapper.find('.students-table__submit')
+
+      expect(submitButton.attributes('disabled')).toBeDefined()
+    })
+
+    test('submit button should not be disabled when new row is filled with values and some value changed', async () => {
+      const addRowButton = wrapper.find('[data-test="add-row-button"]')
+
+      await addRowButton.trigger('click')
+
+      await fillOutStudentRow(gridApi, gridApi.getRenderedNodes().length - 1, wrapper)
+
+      const submitButton = wrapper.find('.students-table__submit')
+
+      await flushPromises()
+      expect(submitButton.attributes('disabled')).not.toBeDefined()
     })
   })
 })
