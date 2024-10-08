@@ -5,7 +5,7 @@ import type { StudentsTableRowData } from '@/helpers/columnDefinitions'
 type StudentsGetterParams = ValueGetterParams<StudentsTableRowData>
 
 export const getStudentsBirthDate = (params: StudentsGetterParams) => {
-  const date = params.data?.birthDate.value
+  const date = params.data?.birthDate?.value
 
   return date ? new Date(date) : ''
 }
