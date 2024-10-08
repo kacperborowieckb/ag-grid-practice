@@ -5,15 +5,14 @@
 import { beforeEach, describe, expect, test, vi } from 'vitest'
 import { createPinia, setActivePinia } from 'pinia'
 import { flushPromises, mount, type VueWrapper } from '@vue/test-utils'
-import type { GridApi, IRowNode } from 'ag-grid-community'
+import type { GridApi } from 'ag-grid-community'
 
 import StudentsTable from '@/components/StudentsTable.vue'
 import { getStudentsWithMetadata } from '@/helpers/metadataMappers'
-import { mockStudentsData, mockStudentsDataWithMetadata } from '@/mocks/mockStudentsData'
+import { mockStudentsData } from '@/mocks/mockStudentsData'
 import { ensureGridApiHasBeenSet, fillOutStudentRow, getLastRowData } from '@/utils/testing'
 import { type StudentWithMetadata, useStudentsStore } from '@/stores/students'
-import { getStudentsSpy, updateStudentsSpy } from '@/mocks/mockStudentsEndpoints'
-import { removeStudentsMetadata } from '@/helpers/metadataRemovers'
+import { deleteStudentsSpy, getStudentsSpy, updateStudentsSpy } from '@/mocks/mockStudentsEndpoints'
 
 describe('StudentsTable', () => {
   let wrapper: VueWrapper
@@ -35,6 +34,9 @@ describe('StudentsTable', () => {
 
     return gridApi.getCellValue({ rowNode, colKey, useFormatter })
   }
+
+  const getStudent = (id: string) =>
+    mockStudentsStore.students?.find((student) => student.id.value === id)
 
   beforeEach(async () => {
     setActivePinia(createPinia())
@@ -320,7 +322,7 @@ describe('StudentsTable', () => {
     })
   })
 
-  describe.only('adding new rows', () => {
+  describe('adding new rows', () => {
     test('should add new row without any data on button click', async () => {
       const addRowButton = wrapper.find('[data-test="add-row-button"]')
 
@@ -376,5 +378,140 @@ describe('StudentsTable', () => {
       await flushPromises()
       expect(submitButton.attributes('disabled')).not.toBeDefined()
     })
+
+    test('should be able to add more than one row', async () => {
+      const addRowButton = wrapper.find('[data-test="add-row-button"]')
+
+      await addRowButton.trigger('click')
+      await addRowButton.trigger('click')
+
+      expect((wrapper.vm as any).addedRows.length).toBe(2)
+    })
+
+    test('submit button should be disabled when only one of added rows is fulfilled', async () => {
+      const addRowButton = wrapper.find('[data-test="add-row-button"]')
+
+      await addRowButton.trigger('click')
+      await fillOutStudentRow(gridApi, gridApi.getRenderedNodes().length - 1, wrapper)
+      await addRowButton.trigger('click')
+
+      const submitButton = wrapper.find('.students-table__submit')
+
+      expect(submitButton.attributes('disabled')).toBeDefined()
+    })
+  })
+
+  describe('selection', () => {
+    test('should add selected row to selectedRows array', async () => {
+      gridApi.getRowNode(mockStudentsData[0].id)?.setSelected(true)
+      gridApi.redrawRows()
+
+      await flushPromises()
+
+      expect((wrapper.vm as any).selectedRows.length).toBe(1)
+    })
+
+    test('should remove selected row to selectedRows array after deselect', async () => {
+      gridApi.getRowNode(mockStudentsData[0].id)?.setSelected(true)
+      gridApi.getRowNode(mockStudentsData[0].id)?.setSelected(false)
+
+      await flushPromises()
+
+      expect((wrapper.vm as any).selectedRows.length).toBe(0)
+    })
+
+    test('should add all rows to selectedRows array on header checkbox click', async () => {
+      await wrapper.find('.ag-header input[type="checkbox"]').trigger('click')
+      gridApi.redrawRows()
+      await flushPromises()
+
+      expect((wrapper.vm as any).selectedRows.length).toBe(gridApi.getRenderedNodes().length)
+    })
+  })
+
+  describe('deleting rows', () => {
+    test('delete rows button should be disabled when no rows selected', async () => {
+      const deleteRowsButton = wrapper.find('[data-test="delete-rows-button"]')
+
+      await flushPromises()
+
+      expect(deleteRowsButton.attributes('disabled')).toBeDefined()
+    })
+
+    test('delete rows button should not be disabled when some row is selected', async () => {
+      gridApi.getRowNode(mockStudentsData[0].id)?.setSelected(true)
+
+      await wrapper.vm.$nextTick()
+
+      const deleteRowsButton = wrapper.find('[data-test="delete-rows-button"]')
+
+      await flushPromises()
+
+      expect(deleteRowsButton.attributes('disabled')).not.toBeDefined()
+    })
+
+    test('should delete selected rows', async () => {
+      const deleteRowsButton = wrapper.find('[data-test="delete-rows-button"]')
+
+      gridApi.getRowNode(mockStudentsData[0].id)?.setSelected(true)
+      gridApi.redrawRows()
+      await flushPromises()
+
+      await deleteRowsButton.trigger('click')
+
+      expect(getStudent(mockStudentsData[0].id)).toBe(undefined)
+      expect(deleteStudentsSpy).toBeCalledWith([mockStudentsData[0]])
+    })
+
+    test('should delete selected newly added rows', async () => {
+      const deleteRowsButton = wrapper.find('[data-test="delete-rows-button"]')
+      const addRowButton = wrapper.find('[data-test="add-row-button"]')
+
+      await addRowButton.trigger('click')
+
+      const newRowId = getLastRowData<StudentWithMetadata>(gridApi).id.value ?? ''
+
+      gridApi.getRowNode(newRowId)?.setSelected(true)
+      gridApi.redrawRows()
+      await flushPromises()
+
+      await deleteRowsButton.trigger('click')
+
+      expect(deleteStudentsSpy).toBeCalledWith([])
+      expect(getLastRowData<StudentWithMetadata>(gridApi).id.value).not.toBe(newRowId)
+    })
+
+    test('should delete selected rows both newly added and from store', async () => {
+      await wrapper.find('[data-test="add-row-button"]').trigger('click')
+
+      const newRowId = getLastRowData<StudentWithMetadata>(gridApi).id.value ?? ''
+
+      gridApi.getRowNode(newRowId)?.setSelected(true)
+      gridApi.getRowNode(mockStudentsData[0].id)?.setSelected(true)
+
+      gridApi.redrawRows()
+      await flushPromises()
+
+      await wrapper.find('[data-test="delete-rows-button"]').trigger('click')
+
+      expect(getStudent(mockStudentsData[0].id)).toBe(undefined)
+      expect(getLastRowData<StudentWithMetadata>(gridApi).id.value).not.toBe(newRowId)
+      expect(deleteStudentsSpy).toBeCalledWith([mockStudentsData[0]])
+    })
+
+    test('should delete all rows on header checkbox selection', async () => {
+      await wrapper.find(".ag-header input[type='checkbox']").trigger('click')
+      await flushPromises()
+
+      await wrapper.find('[data-test="delete-rows-button"]').trigger('click')
+      gridApi.redrawRows()
+      await flushPromises()
+
+      expect(deleteStudentsSpy).toBeCalled()
+      expect(gridApi.getRenderedNodes().length).toBe(0)
+      expect(mockStudentsStore.students?.length).toBe(0)
+    })
+
+    test('should delete all rows with newly added ones on header checkbox selection', () => {})
   })
 })
