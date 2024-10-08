@@ -34,6 +34,7 @@ export const defaultStudentsColDef: ColDef = {
 
 export const studentsColDefs: ColDef<StudentsTableRowData>[] = [
   {
+    colId: 'checkboxSelection',
     headerName: '',
     checkboxSelection: true,
     headerCheckboxSelection: true,

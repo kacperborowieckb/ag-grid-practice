@@ -13,3 +13,9 @@ export const getStudentsSpy = vi
 export const updateStudentsSpy = vi
   .spyOn(api.students, 'updateStudents')
   .mockResolvedValue([{ status: 200 }, { status: 200 }] as AxiosResponse[])
+
+export const addStudentsSpy = vi.spyOn(api.students, 'addStudents').mockResolvedValue([])
+
+export const deleteStudentsSpy = vi
+  .spyOn(api.students, 'deleteStudents')
+  .mockResolvedValue([{ status: 200 }] as AxiosResponse[])

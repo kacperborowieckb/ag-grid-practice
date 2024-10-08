@@ -1,8 +1,11 @@
 <template>
   <div class="students-table">
     <div class="students-table__actions">
-      <button class="students-table__action-button" @click="addRow">Add Row</button>
+      <button data-test="add-row-button" class="students-table__action-button" @click="addRow">
+        Add Row
+      </button>
       <button
+        data-test="delete-rows-button"
         class="students-table__action-button"
         :disabled="isDeleteRowsButtonDisabled"
         @click="deleteSelectedRows"
@@ -14,6 +17,7 @@
       class="students-table__grid ag-theme-quartz-dark"
       rowSelection="multiple"
       suppressRowClickSelection
+      singleClickEdit
       :loading="studentsStore.isFetchLoading"
       :rowData="studentsStore.students"
       :columnDefs="studentsColDefs"
@@ -24,7 +28,11 @@
       @cellEditingStopped="onCellEditingStopped"
       @selectionChanged="onSelectionChanged"
     />
-    <button class="students-table__submit" :disabled="isSubmitDisabled" @click="updateStudents">
+    <button 
+      class="students-table__submit" 
+      :disabled="isSubmitDisabled" 
+      @click="updateStudents"
+    >
       {{ submitButtonMessage }}
     </button>
   </div>
@@ -45,6 +53,7 @@ import 'ag-grid-community/styles/ag-theme-quartz.css'
 import { useStudentsStore, type StudentWithMetadata } from '@/stores/students'
 import { defaultStudentsColDef, studentsColDefs } from '@/helpers/columnDefinitions'
 import { useGridError } from '@/composables/useGridError'
+import { emptyStudent } from '@/constants'
 
 const studentsStore = useStudentsStore()
 
@@ -116,15 +125,6 @@ const updateStudents = () => {
 }
 
 const addRow = () => {
-  const emptyStudent = {
-    id: { value: crypto.randomUUID(), isValidated: true },
-    name: { isValidated: false },
-    lastName: { isValidated: false },
-    birthDate: { isValidated: false },
-    finalGrade: { isValidated: false },
-    hobbies: { value: [], isValidated: true }
-  }
-
   studentsTableApi.value?.applyTransaction({
     add: [emptyStudent]
   })
